@@ -55,6 +55,13 @@ Scheduler.prototype.schedule = function schedule () {
     context = arguments[1] || window;
   }
 
+  this.tasks.forEach( function ( task ) {
+    if ( task.id === id ) {
+      throw new RangeError( 'A task with the ID "' + id + '" already exists' );
+      return;
+    }
+  });
+
   this.tasks.push({
     id: id,
     context: context,

@@ -25,6 +25,10 @@ describe( 'Scheduler', function () {
     };
   });
 
+  afterEach( function () {
+    scheduler.clear();
+  });
+
 
 
 
@@ -40,9 +44,11 @@ describe( 'Scheduler', function () {
       });
     });
 
-    it( 'shouldn\'t allow duplicate IDs', function () {
+    it( 'should error on duplicate IDs', function () {
       scheduler.schedule( 'foo', foo );
-      expect( scheduler.tasks.length ).to.equal( 1 );
+      expect( function () {
+        scheduler.schedule( 'foo', foo )
+      }).to.throw( RangeError );
     });
   });
 
