@@ -50,6 +50,14 @@ describe( 'Scheduler', function () {
         scheduler.schedule( 'foo', foo )
       }).to.throw( RangeError );
     });
+
+    it( 'should be able to schedule multiple tasks', function () {
+      scheduler.schedule( 'foo', foo );
+      scheduler.schedule( 'bar', foo );
+      scheduler.schedule( 'baz', foo );
+
+      expect( scheduler.tasks.length ).to.equal( 3 );
+    });
   });
 
 
