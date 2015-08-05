@@ -65,15 +65,19 @@ Creates a new instance of `Scheduler`.
 
 | Parameter | Required/Optional | Description |
 |-|-|-|
-| `taskId` | required | A string used to manipulate the task within the context of the `Scheduler`. |
+| `taskId` | optional | A string used to manipulate the task within the context of the `Scheduler`. If an ID is not passed then the task's ID will be it's index in `Scheduler.tasks`. |
 | `task` | required | The function to be run. |
 | `context` | optional | A value to be used for `this` inside the task. |
+
+**Returns** the task's ID.
 
 ### `Scheduler.unschedule( taskId )`
 
 | Parameter | Required/Optional | Description |
 |-|-|-|
 | `taskId` | required | The task to be removed from the schedule. This will completely remove the task from the `Scheduler` so it cannot be restarted. |
+
+**Returns** a success boolean.
 
 ### `Scheduler.clear()`
 

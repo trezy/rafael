@@ -104,8 +104,6 @@ Scheduler.prototype.clear = function schedule () {
   if ( this.tasks.length ) {
     this.tasks = [];
   }
-
-  return true;
 }
 
 
