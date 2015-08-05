@@ -39,6 +39,11 @@ describe( 'Scheduler', function () {
         done();
       });
     });
+
+    it( 'shouldn\'t allow duplicate IDs', function () {
+      scheduler.schedule( 'foo', foo );
+      expect( scheduler.tasks.length ).to.equal( 1 );
+    });
   });
 
 
