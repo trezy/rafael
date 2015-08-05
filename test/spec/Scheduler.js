@@ -11,7 +11,7 @@ expect = chai.expect;
 
 
 describe( 'Scheduler', function () {
-  var bar, foo, scheduler;
+  var foo, scheduler;
 
 
 
@@ -20,11 +20,8 @@ describe( 'Scheduler', function () {
   before( function () {
     scheduler = new Scheduler;
 
-    bar = false;
-
     foo = function () {
-      console.log( 'foo' );
-      bar = true;
+      return true;
     };
   });
 
@@ -37,9 +34,10 @@ describe( 'Scheduler', function () {
   });
 
   describe( '.schedule()', function () {
-    it( 'should schedule a task', function () {
-      scheduler.schedule( 'foo', foo );
-      expect( scheduler.tasks[0].id ).to.equal( 'foo' );
+    it( 'should schedule a task', function ( done ) {
+      scheduler.schedule( 'foo', function () {
+        done();
+      });
     });
   });
 
