@@ -37,7 +37,10 @@ describe( 'Scheduler', function () {
   });
 
   describe( '.schedule()', function () {
-    it( 'should schedule a task' );
+    it( 'should schedule a task', function () {
+      scheduler.schedule( 'foo', foo );
+      expect( scheduler.tasks[0].id ).to.equal( 'foo' );
+    });
   });
 
 
@@ -49,7 +52,10 @@ describe( 'Scheduler', function () {
   });
 
   describe( '.unschedule()', function () {
-    it( 'should unschedule a task' );
+    it( 'should unschedule a task', function () {
+      scheduler.unschedule( 'foo' );
+      expect( scheduler.tasks ).to.be.empty;
+    });
   });
 
 
@@ -61,6 +67,12 @@ describe( 'Scheduler', function () {
   });
 
   describe( '.clear()', function () {
-    it( 'should clear all tasks' );
+    it( 'should clear all tasks', function () {
+      scheduler.schedule( 'foo', foo );
+      scheduler.schedule( 'bar', foo );
+      scheduler.schedule( 'baz', foo );
+      scheduler.clear();
+      expect( scheduler.tasks ).to.be.empty;
+    });
   });
 });
