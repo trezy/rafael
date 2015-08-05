@@ -42,7 +42,7 @@ Scheduler = function Scheduler () {
   set, the context will be `window`.
 */
 Scheduler.prototype.schedule = function schedule () {
-  var context, id, task;
+  var context, i, id, task;
 
   if ( typeof arguments[0] === 'string' ) {
     id = arguments[0];
@@ -55,12 +55,16 @@ Scheduler.prototype.schedule = function schedule () {
     context = arguments[1] || window;
   }
 
-  this.tasks.forEach( function ( task ) {
+  for( i = 0; i < this.tasks.length; i++ ) {
+    var task;
+
+    task = this.tasks[i];
+
     if ( task.id === id ) {
       throw new RangeError( 'A task with the ID "' + id + '" already exists' );
       return;
     }
-  });
+  };
 
   this.tasks.push({
     id: id,
@@ -81,18 +85,21 @@ Scheduler.prototype.schedule = function schedule () {
   Remove a task from our loop. `id` is ID of the task to be removed from this `Scheduler`.
 */
 Scheduler.prototype.unschedule = function schedule ( id ) {
-  var newTaskList, oldTaskList;
+  var i, newArray;
 
-  newTaskList = [];
-  oldTaskList = this.tasks;
+  newArray = [];
 
-  oldTaskList.forEach( function ( task ) {
+  for ( i = 0; i < this.tasks.length; i++ ) {
+    var task;
+
+    task = this.tasks[i];
+
     if ( task.id !== id ) {
-      newTaskList.push( task );
-    }
-  });
+      newArray.push( task );
+    };
+  };
 
-  this.tasks = newTaskList;
+  this.tasks = newArray;
 
   return !this.tasks[id];
 }
@@ -123,7 +130,7 @@ Scheduler.prototype.clear = function schedule () {
   Start the loop `requestAnimationFrame` loop for this `Scheduler`.
 */
 Scheduler.prototype._startLoop = function _startLoop () {
-  var schedule;
+  var i, schedule;
 
   schedule = this;
 
@@ -131,7 +138,11 @@ Scheduler.prototype._startLoop = function _startLoop () {
     schedule._startLoop()
   });
 
-  schedule.tasks.forEach( function ( taskObject ) {
+  for ( i = 0; i < this.tasks.length; i++ ) {
+    var taskObject;
+
+    taskObject = this.tasks[i];
+
     taskObject.task.call( taskObject.context );
-  });
+  };
 }
