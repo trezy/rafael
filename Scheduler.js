@@ -19,7 +19,7 @@ Scheduler = function Scheduler () {
   this.tasks = [];
   this._startLoop();
 
-  return true;
+  return this;
 }
 
 

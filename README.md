@@ -59,7 +59,7 @@ setTimeout( function () {
 
 ### `new Scheduler`
 
-Creates a new instance of `Scheduler`.
+Creates and returns a new instance of `Scheduler`.
 
 ### `Scheduler.schedule( taskId, task[, context] )`
 
