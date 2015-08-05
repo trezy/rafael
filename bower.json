@@ -1,0 +1,20 @@
+{
+  "name": "Scheduler.js",
+  "main": "Scheduler.js",
+  "version": "1.0.0",
+  "authors": [
+    "Trezy <tre@trezy.com>"
+  ],
+  "license": "MIT",
+  "description": "Scheduler.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "grunt",
+    "Gruntfile.js",
+    "package.json",
+    "README.md"
+  ]
+}

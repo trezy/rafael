@@ -1,0 +1,12 @@
+<script src="dist/Scheduler.min.js"></script>
+<script>
+  var foo, scheduler;
+
+  scheduler = new Scheduler;
+
+  foo = function () {
+    console.log('foo');
+  };
+
+  scheduler.schedule( 'foo', foo, window );
+</script>

@@ -1,0 +1,30 @@
+{
+  "name": "Scheduler.js",
+  "main": "Scheduler.js",
+  "version": "1.0.0",
+  "authors": [
+    "Trezy <tre@trezy.com>"
+  ],
+  "license": "MIT",
+  "description": "Scheduler.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
+  "scripts": {
+    "test": "grunt test",
+    "prepublish": "grunt dist",
+    "postinstall": "npm prune && bower install && bower prune"
+  },
+  "devDependencies": {
+    "chai": "latest",
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-uglify": "^0.8.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-groc": "^0.5.0",
+    "grunt-mocha": "^0.4.13",
+    "grunt-releaseable": "0.0.16",
+    "grunt-umd": "^2.3.3",
+    "load-grunt-config": "^0.16.0",
+    "mocha": "latest",
+    "requirejs": "^2.1.20",
+    "time-grunt": "^1.1.0"
+  }
+}
