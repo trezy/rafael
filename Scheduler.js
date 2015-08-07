@@ -19,8 +19,6 @@ Scheduler = function Scheduler () {
   this.tasks = [];
   this._startLoop = this._startLoop.bind(this);
   this._startLoop();
-
-  return this;
 }
 
 
