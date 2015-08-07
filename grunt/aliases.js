@@ -1,7 +1,15 @@
 module.exports = {
   default: [
+    'build'
+  ],
+
+  build: [
     'dist',
-    'docs',
+    'docs'
+  ],
+
+  dev: [
+    'build',
     'watch'
   ],
 

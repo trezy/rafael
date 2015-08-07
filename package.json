@@ -17,7 +17,6 @@
   "description": "Scheduler.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
   "scripts": {
     "test": "grunt test",
-    "prepublish": "grunt dist",
     "postinstall": "npm prune"
   },
   "devDependencies": {
