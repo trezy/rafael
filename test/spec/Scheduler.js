@@ -11,7 +11,7 @@ expect = chai.expect;
 
 
 describe( 'Scheduler', function () {
-  var foo, scheduler;
+  var foo, isDone, scheduler;
 
 
 
@@ -19,6 +19,7 @@ describe( 'Scheduler', function () {
 
   before( function () {
     scheduler = new Scheduler;
+    isDone = false;
 
     foo = function () {
       return true;
@@ -37,10 +38,25 @@ describe( 'Scheduler', function () {
     expect( scheduler.schedule ).to.be.a( 'function' );
   });
 
+  it('should have a method named "unschedule"', function () {
+    expect( scheduler.unschedule ).to.be.a( 'function' );
+  });
+
+  it('should have a method named "clear"', function () {
+    expect( scheduler.clear ).to.be.a( 'function' );
+  });
+
+
+
+
+
   describe( '.schedule()', function () {
     it( 'should schedule a task', function ( done ) {
       scheduler.schedule( 'foo', function () {
-        done();
+        if ( !isDone ) {
+          isDone = true;
+          done();
+        }
       });
     });
 
@@ -64,10 +80,6 @@ describe( 'Scheduler', function () {
 
 
 
-  it('should have a method named "unschedule"', function () {
-    expect( scheduler.unschedule ).to.be.a( 'function' );
-  });
-
   describe( '.unschedule()', function () {
     it( 'should unschedule a task', function () {
       scheduler.unschedule( 'foo' );
@@ -78,10 +90,6 @@ describe( 'Scheduler', function () {
 
 
 
-
-  it('should have a method named "clear"', function () {
-    expect( scheduler.clear ).to.be.a( 'function' );
-  });
 
   describe( '.clear()', function () {
     it( 'should clear all tasks', function () {

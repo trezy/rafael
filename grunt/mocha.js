@@ -1,14 +1,32 @@
 module.exports = {
+  all: {
+    src: [
+      'test/test.html'
+    ]
+  },
+  options: {
+    mocha: {
+      ignoreLeaks: false
+    },
+    run: true
+  },
+
   test: {
-    src: ['test/test.html']
+    options: {
+      reporter: 'Spec'
+    },
+    src: [
+      'test/test.html'
+    ]
   },
 
   coverage: {
     options: {
-      reporter: 'HTMLCov',
-      run: true
+      reporter: 'HTMLCov'
     },
-    src: ['test/test.html'],
+    src: [
+      'test/test.html'
+    ],
     dest: 'doc/coverage.html'
   }
 }
