@@ -17,6 +17,7 @@ var Scheduler;
 */
 Scheduler = function Scheduler () {
   this.tasks = [];
+  this._startLoop = this._startLoop.bind(this);
   this._startLoop();
 
   return this;
@@ -125,6 +126,19 @@ Scheduler.prototype.clear = function schedule () {
 
 
 /*
+  ## `Scheduler._taskCaller( taskObject )`
+
+  Start the loop `requestAnimationFrame` loop for this `Scheduler`.
+*/
+Scheduler.prototype._taskCaller = function _taskCaller ( taskObject ) {
+  taskObject.task.call( taskObject.context );
+}
+
+
+
+
+
+/*
   ## `Scheduler._startLoop()`
 
   Start the loop `requestAnimationFrame` loop for this `Scheduler`.
@@ -134,15 +148,11 @@ Scheduler.prototype._startLoop = function _startLoop () {
 
   schedule = this;
 
-  requestAnimationFrame( function () {
-    schedule._startLoop()
-  });
+  requestAnimationFrame( schedule._startLoop );
 
   for ( i = 0; i < this.tasks.length; i++ ) {
     var taskObject;
 
-    taskObject = this.tasks[i];
-
-    taskObject.task.call( taskObject.context );
+    this._taskCaller( this.tasks[i] );
   };
 }

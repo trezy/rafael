@@ -10,7 +10,7 @@
   "scripts": {
     "test": "grunt test",
     "prepublish": "grunt dist",
-    "postinstall": "npm prune && bower install && bower prune"
+    "postinstall": "npm prune"
   },
   "devDependencies": {
     "chai": "latest",
