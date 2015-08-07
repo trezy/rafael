@@ -1,9 +1,4 @@
 module.exports = {
-  all: {
-    src: [
-      'test/test.html'
-    ]
-  },
   options: {
     mocha: {
       ignoreLeaks: false
