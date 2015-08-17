@@ -22,6 +22,6 @@ module.exports = {
     src: [
       'test/test.html'
     ],
-    dest: 'doc/coverage.html'
+    dest: './doc/coverage.html'
   }
 }
