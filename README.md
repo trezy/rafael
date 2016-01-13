@@ -1,6 +1,6 @@
 # Scheduler.js
 
-Scheduler.js is a simple scheduler based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop. Typically you may use something like [`window.setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setInterval) or [`window.setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout) to achieve this.
+Scheduler.js is a simple client side scheduler based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop. Typically you may use something like [`window.setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setInterval) or [`window.setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout) to achieve this.
 
 However, `requestAnimationFrame` allows us to utilize the GPU, avoiding the performance bottlenecks of those other methods. `requestAnimationFrame` is intended to allow Javascript animations to utilize the computer's GPU so it can be handled at ~60fps (performance depends on the machine). Scheduler just makes it easy to control multiple tasks running on the `requestAnimationFrame` loop.
 
@@ -78,6 +78,22 @@ The `unschedule()` method removes a task from the schedule and stops it from run
 | Parameter | Required/Optional | Description |
 |---|---|---|
 | `taskId` | required | The task to be removed from the schedule. This will completely remove the task from the `Scheduler` so it cannot be restarted. |
+
+### `Scheduler.pause( [taskId] )`
+
+The `pause()` method pauses a task without removing it from the schedule. The task can later be restarted with `start()`.
+
+| Parameter | Required/Optional | Description |
+|---|---|---|
+| `taskId` | optional | The task to be paused. If no `taskId` is passed, the entire scheduler will be paused. |
+
+### `Scheduler.start( [taskId] )`
+
+The `start()` method restarts a paused task.
+
+| Parameter | Required/Optional | Description |
+|---|---|---|
+| `taskId` | optional | The task to be started. If no `taskId` is passed, the entire scheduler will be started. |
 
 ### `Scheduler.clear()`
 

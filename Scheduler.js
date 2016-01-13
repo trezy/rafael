@@ -1,7 +1,7 @@
 /*
 # Scheduler v1.0.0
 */
-var Scheduler;
+var Scheduler
 
 
 
@@ -16,9 +16,10 @@ var Scheduler;
   This will kick off the `Scheduler`'s loop to constantly run tasks.
 */
 Scheduler = function Scheduler () {
-  this.tasks = [];
-  this._startLoop = this._startLoop.bind(this);
-  this._startLoop();
+  this.paused = false
+  this.tasks = {}
+  this._startLoop = this._startLoop.bind(this)
+  this._startLoop()
 }
 
 
@@ -41,37 +42,31 @@ Scheduler = function Scheduler () {
   set, the context will be `window`.
 */
 Scheduler.prototype.schedule = function schedule () {
-  var context, i, id, task;
+  var context, i, id, task
 
   if ( typeof arguments[0] === 'string' ) {
-    id = arguments[0];
-    task = arguments[1];
-    context = arguments[2] || window;
+    id = arguments[0]
+    task = arguments[1]
+    context = arguments[2] || window
 
   } else {
-    id = this.tasks.length;
-    task = arguments[0];
-    context = arguments[1] || window;
+    id = this.tasks.length
+    task = arguments[0]
+    context = arguments[1] || window
   }
 
-  for( i = 0; i < this.tasks.length; i++ ) {
-    var task;
+  if ( this.tasks[id] ) {
+    throw new RangeError( 'A task with the ID "' + id + '" already exists' )
+    return
+  }
 
-    task = this.tasks[i];
-
-    if ( task.id === id ) {
-      throw new RangeError( 'A task with the ID "' + id + '" already exists' );
-      return;
-    }
-  };
-
-  this.tasks.push({
-    id: id,
+  this.tasks[id] = {
     context: context,
+    paused: false,
     task: task
-  });
+  }
 
-  return id;
+  return id
 }
 
 
@@ -84,23 +79,8 @@ Scheduler.prototype.schedule = function schedule () {
   Remove a task from our loop. `id` is ID of the task to be removed from this `Scheduler`.
 */
 Scheduler.prototype.unschedule = function schedule ( id ) {
-  var i, newArray;
-
-  newArray = [];
-
-  for ( i = 0; i < this.tasks.length; i++ ) {
-    var task;
-
-    task = this.tasks[i];
-
-    if ( task.id !== id ) {
-      newArray.push( task );
-    };
-  };
-
-  this.tasks = newArray;
-
-  return !this.tasks[id];
+  delete this.tasks[id]
+  return !this.tasks[id]
 }
 
 
@@ -114,8 +94,44 @@ Scheduler.prototype.unschedule = function schedule ( id ) {
   since this is a destructive operation.
 */
 Scheduler.prototype.clear = function schedule () {
-  if ( this.tasks.length ) {
-    this.tasks = [];
+  this.tasks = {}
+}
+
+
+
+
+
+/*
+  ## `Scheduler.pause( id )`
+
+  TODO: Describe
+*/
+Scheduler.prototype.pause = function pause ( id ) {
+  console.log( 'Pausing', id || 'scheduler' )
+
+  if ( id ) {
+    this.tasks[id].paused = true
+  } else {
+    this.paused = true
+  }
+}
+
+
+
+
+
+/*
+  ## `Scheduler.start( id )`
+
+  TODO: Describe
+*/
+Scheduler.prototype.start = function start ( id ) {
+  console.log( 'Starting', id || 'scheduler' )
+
+  if ( id ) {
+    this.tasks[id].paused = false
+  } else {
+    this.paused = false
   }
 }
 
@@ -129,7 +145,7 @@ Scheduler.prototype.clear = function schedule () {
   Start the loop `requestAnimationFrame` loop for this `Scheduler`.
 */
 Scheduler.prototype._taskCaller = function _taskCaller ( taskObject ) {
-  taskObject.task.call( taskObject.context );
+  taskObject.task.call( taskObject.context )
 }
 
 
@@ -142,15 +158,22 @@ Scheduler.prototype._taskCaller = function _taskCaller ( taskObject ) {
   Start the loop `requestAnimationFrame` loop for this `Scheduler`.
 */
 Scheduler.prototype._startLoop = function _startLoop () {
-  var i, schedule;
+  var i, schedule, tasks
 
-  schedule = this;
+  schedule = this
+  tasks = Object.keys( this.tasks )
 
-  requestAnimationFrame( schedule._startLoop );
+  requestAnimationFrame( schedule._startLoop )
 
-  for ( i = 0; i < this.tasks.length; i++ ) {
-    var taskObject;
+  if ( !this.paused ) {
+    for ( i = 0; i < tasks.length; i++ ) {
+      var task
 
-    this._taskCaller( this.tasks[i] );
-  };
+      task = this.tasks[tasks[i]]
+
+      if ( !task.paused ) {
+        this._taskCaller( task )
+      }
+    }
+  }
 }

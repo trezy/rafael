@@ -8,7 +8,8 @@ module.exports = {
       'Scheduler.js'
     ],
     tasks: [
-      'dist'
+      'dist',
+      'test'
     ]
   },
 
@@ -19,5 +20,14 @@ module.exports = {
     tasks: [
       'docs'
     ]
-  }
+  },
+
+//  test: {
+//    files: [
+//      'test/**/*.js'
+//    ],
+//    tasks: [
+//      'test'
+//    ]
+//  }
 };
