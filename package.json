@@ -1,5 +1,5 @@
 {
-  "name": "Scheduler.js",
+  "name": "scheduler.js",
   "main": "dist/Scheduler.js",
   "version": "2.0.0",
   "authors": [
