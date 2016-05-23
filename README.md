@@ -18,16 +18,16 @@ Now let's schedule something:
 
 ```javascript
 var foo = function () {
-  console.log( 'Do a thing.' );
+  console.log('Do a thing.');
 };
 
-scheduler.schedule( 'foo', foo );
+scheduler.schedule('foo', foo);
 ```
 
 Then let's stop it:
 
 ```javascript
-scheduler.unschedule( 'foo' );
+scheduler.unschedule('foo');
 ```
 
 Boom. Now let's get crazy:
@@ -36,21 +36,21 @@ var fooCounter = 0;
 var barCounter = 0;
 
 var foo = function () {
-  console.log( 'foo has run ' + fooCounter + ' times.' );
+  console.log('foo has run ' + fooCounter + ' times.');
   fooCounter++;
 };
 
 var bar = function () {
-  console.log( 'bar has run ' + barCounter + ' times.' );
+  console.log('bar has run ' + barCounter + ' times.');
   barCounter++;
 };
 
-scheduler.schedule( 'foo', foo );
-scheduler.schedule( 'bar', bar );
+scheduler.schedule('foo', foo);
+scheduler.schedule('bar', bar);
 
-setTimeout( function () {
-  scheduler.unschedule( 'foo' );
-}, 1000 )
+setTimeout(function () {
+  scheduler.unschedule('foo');
+}, 1000)
 ```
 
 `Scheduler` will be happy to run as many tasks as you want to give it.
@@ -61,7 +61,7 @@ setTimeout( function () {
 
 Creates and returns a new instance of `Scheduler`.
 
-### `Scheduler.schedule( taskId, task[, context] )`
+### `Scheduler.schedule(taskId, task[, context])`
 
 The `schedule()` method adds a task to the schedule, causing it to run on every iteration of the schedule loop. *Returns* the task's ID.
 
@@ -71,7 +71,7 @@ The `schedule()` method adds a task to the schedule, causing it to run on every 
 | `task` | required | The function to be run. |
 | `context` | optional | A value to be used for `this` inside the task. |
 
-### `Scheduler.unschedule( taskId )`
+### `Scheduler.unschedule(taskId)`
 
 The `unschedule()` method removes a task from the schedule and stops it from running. *Returns* a success boolean.
 
@@ -79,7 +79,7 @@ The `unschedule()` method removes a task from the schedule and stops it from run
 |---|---|---|
 | `taskId` | required | The task to be removed from the schedule. This will completely remove the task from the `Scheduler` so it cannot be restarted. |
 
-### `Scheduler.pause( [taskId] )`
+### `Scheduler.pause([taskId])`
 
 The `pause()` method pauses a task without removing it from the schedule. The task can later be restarted with `start()`.
 
@@ -87,7 +87,7 @@ The `pause()` method pauses a task without removing it from the schedule. The ta
 |---|---|---|
 | `taskId` | optional | The task to be paused. If no `taskId` is passed, the entire scheduler will be paused. |
 
-### `Scheduler.start( [taskId] )`
+### `Scheduler.start([taskId])`
 
 The `start()` method restarts a paused task.
 

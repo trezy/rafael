@@ -27,7 +27,7 @@ Scheduler = function Scheduler () {
 
 
 /*
-  ## `Scheduler.schedule( taskId, task, context )`
+  ## `Scheduler.schedule(taskId, task, context)`
 
   Schedule a task to be run in our loop. It takes up to three arguments:
   `taskId`, `task`, and `context`.
@@ -44,7 +44,7 @@ Scheduler = function Scheduler () {
 Scheduler.prototype.schedule = function schedule () {
   var context, i, id, task
 
-  if ( typeof arguments[0] === 'string' ) {
+  if (typeof arguments[0] === 'string') {
     id = arguments[0]
     task = arguments[1]
     context = arguments[2] || window
@@ -55,8 +55,8 @@ Scheduler.prototype.schedule = function schedule () {
     context = arguments[1] || window
   }
 
-  if ( this.tasks[id] ) {
-    throw new RangeError( 'A task with the ID "' + id + '" already exists' )
+  if (this.tasks[id]) {
+    throw new RangeError('A task with the ID "' + id + '" already exists')
     return
   }
 
@@ -74,11 +74,11 @@ Scheduler.prototype.schedule = function schedule () {
 
 
 /*
-  ## `Scheduler.unschedule( id )`
+  ## `Scheduler.unschedule(id)`
 
   Remove a task from our loop. `id` is ID of the task to be removed from this `Scheduler`.
 */
-Scheduler.prototype.unschedule = function schedule ( id ) {
+Scheduler.prototype.unschedule = function schedule (id) {
   delete this.tasks[id]
   return !this.tasks[id]
 }
@@ -102,14 +102,14 @@ Scheduler.prototype.clear = function schedule () {
 
 
 /*
-  ## `Scheduler.pause( id )`
+  ## `Scheduler.pause(id)`
 
   TODO: Describe
 */
-Scheduler.prototype.pause = function pause ( id ) {
-  console.log( 'Pausing', id || 'scheduler' )
+Scheduler.prototype.pause = function pause (id) {
+  console.log('Pausing', id || 'scheduler')
 
-  if ( id ) {
+  if (id) {
     this.tasks[id].paused = true
   } else {
     this.paused = true
@@ -121,14 +121,14 @@ Scheduler.prototype.pause = function pause ( id ) {
 
 
 /*
-  ## `Scheduler.start( id )`
+  ## `Scheduler.start(id)`
 
   TODO: Describe
 */
-Scheduler.prototype.start = function start ( id ) {
-  console.log( 'Starting', id || 'scheduler' )
+Scheduler.prototype.start = function start (id) {
+  console.log('Starting', id || 'scheduler')
 
-  if ( id ) {
+  if (id) {
     this.tasks[id].paused = false
   } else {
     this.paused = false
@@ -140,12 +140,12 @@ Scheduler.prototype.start = function start ( id ) {
 
 
 /*
-  ## `Scheduler._taskCaller( taskObject )`
+  ## `Scheduler._taskCaller(taskObject)`
 
   Start the loop `requestAnimationFrame` loop for this `Scheduler`.
 */
-Scheduler.prototype._taskCaller = function _taskCaller ( taskObject ) {
-  taskObject.task.call( taskObject.context )
+Scheduler.prototype._taskCaller = function _taskCaller (taskObject) {
+  taskObject.task.call(taskObject.context)
 }
 
 
@@ -161,18 +161,18 @@ Scheduler.prototype._startLoop = function _startLoop () {
   var i, schedule, tasks
 
   schedule = this
-  tasks = Object.keys( this.tasks )
+  tasks = Object.keys(this.tasks)
 
-  requestAnimationFrame( schedule._startLoop )
+  requestAnimationFrame(schedule._startLoop)
 
-  if ( !this.paused ) {
-    for ( i = 0; i < tasks.length; i++ ) {
+  if (!this.paused) {
+    for (i = 0; i < tasks.length; i++) {
       var task
 
       task = this.tasks[tasks[i]]
 
-      if ( !task.paused ) {
-        this._taskCaller( task )
+      if (!task.paused) {
+        this._taskCaller(task)
       }
     }
   }
