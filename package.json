@@ -16,7 +16,7 @@
   "license": "MIT",
   "description": "Scheduler.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
   "scripts": {
-    "test": "grunt test:test",
+    "test": "$(npm bin)/grunt test:test",
     "postinstall": "npm prune"
   },
   "devDependencies": {
@@ -34,5 +34,8 @@
     "mocha": "latest",
     "requirejs": "^2.1.20",
     "time-grunt": "^1.1.0"
+  },
+  "dependencies": {
+    "grunt-cli": "^1.2.0"
   }
 }
