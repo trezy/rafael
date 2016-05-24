@@ -1,7 +1,7 @@
 {
   "name": "Scheduler.js",
   "main": "dist/Scheduler.js",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "authors": [
     "Trezy <tre@trezy.com>"
   ],
@@ -32,9 +32,7 @@
     "grunt-mocha": "latest",
     "grunt-umd": "^2.3.3",
     "load-grunt-config": "^0.16.0",
-    "lodash": "^4.0.0",
     "mocha": "latest",
-    "requirejs": "^2.1.20",
     "time-grunt": "^1.1.0"
   }
 }
