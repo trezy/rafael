@@ -9,7 +9,7 @@ module.exports = {
   ],
 
   dev: [
-    'build',
+    'test',
     'watch'
   ],
 

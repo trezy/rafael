@@ -16,6 +16,7 @@
   "license": "MIT",
   "description": "Scheduler.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
   "scripts": {
+    "dev": "$(npm bin)/grunt dev",
     "test": "$(npm bin)/grunt test:test",
     "postinstall": "npm prune"
   },

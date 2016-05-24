@@ -22,12 +22,13 @@ module.exports = {
     ]
   },
 
-//  test: {
-//    files: [
-//      'test/**/*.js'
-//    ],
-//    tasks: [
-//      'test'
-//    ]
-//  }
+  test: {
+    files: [
+      'dist/Scheduler.js',
+      'test/**/*.js'
+    ],
+    tasks: [
+      'test'
+    ]
+  }
 };
