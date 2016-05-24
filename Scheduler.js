@@ -1,5 +1,5 @@
 /*
-# Scheduler v1.0.0
+# Scheduler v2.0.0
 */
 var Scheduler
 
