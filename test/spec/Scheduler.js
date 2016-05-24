@@ -1,22 +1,26 @@
-'use strict'
-
-let expect = chai.expect;
+var expect = chai.expect;
 
 
 
 
 
-describe('Scheduler', () => {
-  before(() => {
-    let scheduler = new Scheduler;
-    let isDone = false;
+describe('Scheduler', function () {
+  var foo, isDone, scheduler;
 
-    let foo = () => {
+
+
+
+
+  before(function () {
+    scheduler = new Scheduler;
+    isDone = false;
+
+    foo = function () {
       return true;
     };
   });
 
-  afterEach(() => {
+  afterEach(function () {
     scheduler.clear();
   });
 
@@ -24,23 +28,23 @@ describe('Scheduler', () => {
 
 
 
-  it('should have a method named "clear"', () => {
+  it('should have a method named "clear"', function () {
     expect(scheduler.clear).to.be.a('function');
   });
 
-  it('should have a method named "pause"', () => {
+  it('should have a method named "pause"', function () {
     expect(scheduler.pause).to.be.a('function');
   });
 
-  it('should have a method named "start"', () => {
+  it('should have a method named "start"', function () {
     expect(scheduler.start).to.be.a('function');
   });
 
-  it('should have a method named "schedule"', () => {
+  it('should have a method named "schedule"', function () {
     expect(scheduler.schedule).to.be.a('function');
   });
 
-  it('should have a method named "unschedule"', () => {
+  it('should have a method named "unschedule"', function () {
     expect(scheduler.unschedule).to.be.a('function');
   });
 
@@ -48,8 +52,8 @@ describe('Scheduler', () => {
 
 
 
-  describe('.clear()', () => {
-    it('should clear all tasks', () => {
+  describe('.clear()', function () {
+    it('should clear all tasks', function () {
       scheduler.schedule('foo', foo);
       scheduler.schedule('bar', foo);
       scheduler.schedule('baz', foo);
@@ -62,8 +66,8 @@ describe('Scheduler', () => {
 
 
 
-  describe('.pause()', () => {
-    it('should pause all tasks', () => {
+  describe('.pause()', function () {
+    it('should pause all tasks', function () {
       scheduler.schedule('foo', foo);
       scheduler.schedule('bar', foo);
       scheduler.schedule('baz', foo);
@@ -71,7 +75,7 @@ describe('Scheduler', () => {
       expect(scheduler.paused).to.be.true;
     });
 
-    it('should pause a single task', () => {
+    it('should pause a single task', function () {
       scheduler.schedule('foo', foo);
       scheduler.schedule('bar', foo);
       scheduler.schedule('baz', foo);
@@ -84,8 +88,8 @@ describe('Scheduler', () => {
 
 
 
-  describe('.start()', () => {
-    it('should start all tasks', () => {
+  describe('.start()', function () {
+    it('should start all tasks', function () {
       scheduler.schedule('foo', foo);
       scheduler.schedule('bar', foo);
       scheduler.schedule('baz', foo);
@@ -94,7 +98,7 @@ describe('Scheduler', () => {
       expect(scheduler.paused).to.be.false;
     });
 
-    it('should start a single task', () => {
+    it('should start a single task', function () {
       scheduler.schedule('foo', foo);
       scheduler.schedule('bar', foo);
       scheduler.schedule('baz', foo);
@@ -108,9 +112,9 @@ describe('Scheduler', () => {
 
 
 
-  describe('.schedule()', () => {
-    it('should schedule a task', (done) => {
-      scheduler.schedule('foo', () => {
+  describe('.schedule()', function () {
+    it('should schedule a task', function (done) {
+      scheduler.schedule('foo', function () {
         if (!isDone) {
           isDone = true;
           done();
@@ -118,14 +122,14 @@ describe('Scheduler', () => {
       });
     });
 
-    it('should error on duplicate IDs', () => {
+    it('should error on duplicate IDs', function () {
       scheduler.schedule('foo', foo);
-      expect(() => {
+      expect(function () {
         scheduler.schedule('foo', foo)
       }).to.throw(RangeError);
     });
 
-    it('should be able to schedule multiple tasks', () => {
+    it('should be able to schedule multiple tasks', function () {
       scheduler.schedule('foo', foo);
       scheduler.schedule('bar', foo);
       scheduler.schedule('baz', foo);
@@ -138,8 +142,8 @@ describe('Scheduler', () => {
 
 
 
-  describe('.unschedule()', () => {
-    it('should unschedule a task', () => {
+  describe('.unschedule()', function () {
+    it('should unschedule a task', function () {
       scheduler.schedule('foo', foo);
       scheduler.unschedule('foo');
       expect(scheduler.tasks).to.be.empty;
