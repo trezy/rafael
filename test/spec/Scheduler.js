@@ -1,52 +1,52 @@
-var expect = chai.expect;
+var expect = chai.expect
 
 
 
 
 
 describe('Scheduler', function () {
-  var foo, isDone, scheduler;
+  var foo, isDone, scheduler
 
 
 
 
 
   before(function () {
-    scheduler = new Scheduler;
-    isDone = false;
+    scheduler = new Scheduler
+    isDone = false
 
     foo = function () {
-      return true;
-    };
-  });
+      return true
+    }
+  })
 
   afterEach(function () {
-    scheduler.clear();
-  });
+    scheduler.clear()
+  })
 
 
 
 
 
   it('should have a method named "clear"', function () {
-    expect(scheduler.clear).to.be.a('function');
-  });
+    expect(scheduler.clear).to.be.a('function')
+  })
 
   it('should have a method named "pause"', function () {
-    expect(scheduler.pause).to.be.a('function');
-  });
+    expect(scheduler.pause).to.be.a('function')
+  })
 
   it('should have a method named "start"', function () {
-    expect(scheduler.start).to.be.a('function');
-  });
+    expect(scheduler.start).to.be.a('function')
+  })
 
   it('should have a method named "schedule"', function () {
-    expect(scheduler.schedule).to.be.a('function');
-  });
+    expect(scheduler.schedule).to.be.a('function')
+  })
 
   it('should have a method named "unschedule"', function () {
-    expect(scheduler.unschedule).to.be.a('function');
-  });
+    expect(scheduler.unschedule).to.be.a('function')
+  })
 
 
 
@@ -54,13 +54,13 @@ describe('Scheduler', function () {
 
   describe('.clear()', function () {
     it('should clear all tasks', function () {
-      scheduler.schedule('foo', foo);
-      scheduler.schedule('bar', foo);
-      scheduler.schedule('baz', foo);
-      scheduler.clear();
-      expect(scheduler.tasks).to.be.empty;
-    });
-  });
+      scheduler.schedule('foo', foo)
+      scheduler.schedule('bar', foo)
+      scheduler.schedule('baz', foo)
+      scheduler.clear()
+      expect(scheduler.tasks).to.be.empty
+    })
+  })
 
 
 
@@ -68,21 +68,21 @@ describe('Scheduler', function () {
 
   describe('.pause()', function () {
     it('should pause all tasks', function () {
-      scheduler.schedule('foo', foo);
-      scheduler.schedule('bar', foo);
-      scheduler.schedule('baz', foo);
-      scheduler.pause();
-      expect(scheduler.paused).to.be.true;
-    });
+      scheduler.schedule('foo', foo)
+      scheduler.schedule('bar', foo)
+      scheduler.schedule('baz', foo)
+      scheduler.pause()
+      expect(scheduler.paused).to.be.true
+    })
 
     it('should pause a single task', function () {
-      scheduler.schedule('foo', foo);
-      scheduler.schedule('bar', foo);
-      scheduler.schedule('baz', foo);
-      scheduler.pause('foo');
-      expect(scheduler.tasks['foo'].paused).to.be.true;
-    });
-  });
+      scheduler.schedule('foo', foo)
+      scheduler.schedule('bar', foo)
+      scheduler.schedule('baz', foo)
+      scheduler.pause('foo')
+      expect(scheduler.tasks['foo'].paused).to.be.true
+    })
+  })
 
 
 
@@ -90,23 +90,23 @@ describe('Scheduler', function () {
 
   describe('.start()', function () {
     it('should start all tasks', function () {
-      scheduler.schedule('foo', foo);
-      scheduler.schedule('bar', foo);
-      scheduler.schedule('baz', foo);
-      scheduler.pause();
-      scheduler.start();
-      expect(scheduler.paused).to.be.false;
-    });
+      scheduler.schedule('foo', foo)
+      scheduler.schedule('bar', foo)
+      scheduler.schedule('baz', foo)
+      scheduler.pause()
+      scheduler.start()
+      expect(scheduler.paused).to.be.false
+    })
 
     it('should start a single task', function () {
-      scheduler.schedule('foo', foo);
-      scheduler.schedule('bar', foo);
-      scheduler.schedule('baz', foo);
-      scheduler.pause('foo');
-      scheduler.start('foo');
-      expect(scheduler.tasks['foo'].paused).to.be.false;
-    });
-  });
+      scheduler.schedule('foo', foo)
+      scheduler.schedule('bar', foo)
+      scheduler.schedule('baz', foo)
+      scheduler.pause('foo')
+      scheduler.start('foo')
+      expect(scheduler.tasks['foo'].paused).to.be.false
+    })
+  })
 
 
 
@@ -116,27 +116,41 @@ describe('Scheduler', function () {
     it('should schedule a task', function (done) {
       scheduler.schedule('foo', function () {
         if (!isDone) {
-          isDone = true;
-          done();
+          isDone = true
+          done()
         }
-      });
-    });
+      })
+    })
 
     it('should error on duplicate IDs', function () {
-      scheduler.schedule('foo', foo);
+      scheduler.schedule('foo', foo)
       expect(function () {
         scheduler.schedule('foo', foo)
-      }).to.throw(RangeError);
-    });
+      }).to.throw(RangeError)
+    })
 
     it('should be able to schedule multiple tasks', function () {
-      scheduler.schedule('foo', foo);
-      scheduler.schedule('bar', foo);
-      scheduler.schedule('baz', foo);
+      scheduler.schedule('foo', foo)
+      scheduler.schedule('bar', foo)
+      scheduler.schedule('baz', foo)
 
-      expect(Object.keys(scheduler.tasks).length).to.equal(3);
-    });
-  });
+      expect(Object.keys(scheduler.tasks).length).to.equal(3)
+    })
+
+    it('should schedule a task with a frame rate', function () {
+      var count = 0
+      var speed = Math.floor(Math.random() * 60)
+
+      scheduler.schedule('foo', function () {
+        count++
+      }, { speed: speed })
+
+      setTimeout(function () {
+        scheduler.unschedule('foo')
+        expect(count).to.be.closeTo(speed, 5)
+      }, 1000)
+    })
+  })
 
 
 
@@ -144,9 +158,9 @@ describe('Scheduler', function () {
 
   describe('.unschedule()', function () {
     it('should unschedule a task', function () {
-      scheduler.schedule('foo', foo);
-      scheduler.unschedule('foo');
-      expect(scheduler.tasks).to.be.empty;
-    });
-  });
-});
+      scheduler.schedule('foo', foo)
+      scheduler.unschedule('foo')
+      expect(scheduler.tasks).to.be.empty
+    })
+  })
+})

@@ -38,22 +38,21 @@ Scheduler = function Scheduler () {
 
   * `task` (required) is the function to be run on this `Scheduler`.
 
-  * `context` (optional) is the value of `this` within the function. If not
-  set, the context will be `window`.
+  * `options` (optional) is a hash of options thingies?
+
+      * `context` (optional) is the value of `this` within the function. If not
+      set, the context will be `window`.
+
+      * `paused` (optional) determines whether this task will run immediately
+      after being added to the schedule
+
+      * `framerate` (optional) is the speed at which the task should be run in
+      frames per second (fps)
 */
-Scheduler.prototype.schedule = function schedule () {
-  var context, i, id, task
+Scheduler.prototype.schedule = function schedule (id, task, options) {
+  options || (options = {})
 
-  if (typeof arguments[0] === 'string') {
-    id = arguments[0]
-    task = arguments[1]
-    context = arguments[2] || window
-
-  } else {
-    id = this.tasks.length
-    task = arguments[0]
-    context = arguments[1] || window
-  }
+  this._frame = 0
 
   if (this.tasks[id]) {
     throw new RangeError('A task with the ID "' + id + '" already exists')
@@ -61,8 +60,9 @@ Scheduler.prototype.schedule = function schedule () {
   }
 
   this.tasks[id] = {
-    context: context,
-    paused: false,
+    context: options.context || window,
+    paused: options.paused || false,
+    framerate: Math.min(Math.ceil(options.framerate), 60) || 60,
     task: task
   }
 
@@ -171,9 +171,25 @@ Scheduler.prototype._startLoop = function _startLoop () {
 
       task = this.tasks[tasks[i]]
 
-      if (!task.paused) {
+      if ((task['framerate'] === 60 || this._shouldRun(task['framerate'])) && !task.paused) {
         this._taskCaller(task)
       }
     }
+
+    this._frame++
   }
+}
+
+
+
+
+
+/*
+  ## `Scheduler._shouldRun()`
+
+  Compares the passed in framerate against the current frame to determine if the
+  task should run on this frame
+*/
+Scheduler.prototype._shouldRun = function _shouldRun (framerate) {
+  return !(Math.floor(this._frame % (60 / framerate)))
 }
