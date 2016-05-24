@@ -27,10 +27,10 @@ Scheduler = function Scheduler () {
 
 
 /*
-  ## `Scheduler.schedule(taskId, task, context)`
+  ## `Scheduler.schedule(taskId, task, options)`
 
   Schedule a task to be run in our loop. It takes up to three arguments:
-  `taskId`, `task`, and `context`.
+  `taskId`, `task`, and `options`.
 
   * `taskId` (optional) represents the ID you'll use to interact with this task
   later on. If an ID isn't set then it will be the index of the new task in

@@ -10,11 +10,12 @@ describe('Scheduler', function () {
 
 
 
-
   before(function () {
     scheduler = new Scheduler
-    isDone = false
+  })
 
+  beforeEach(function () {
+    isDone = false
     foo = function () {
       return true
     }
@@ -162,6 +163,22 @@ describe('Scheduler', function () {
       expect(function () {
         scheduler.schedule('foo', foo, { framerate: framerate })
       }).to.throw(RangeError)
+    })
+
+    it('should execute a task within a given context', function (done) {
+      var scope = {}
+      var then = function () {
+        expect(scope.secret).to.equal('bar')
+        done()
+      }
+
+      scheduler.schedule('foo', function () {
+        if (!isDone) {
+          isDone = true
+          this.secret = 'bar'
+          then()
+        }
+      }, {context: scope})
     })
   })
 
