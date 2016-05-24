@@ -50,6 +50,8 @@ Scheduler = function Scheduler () {
       frames per second (fps)
 */
 Scheduler.prototype.schedule = function schedule (id, task, options) {
+  var framerate
+
   if (typeof id !== 'string') {
     options = task
     task = id
@@ -60,9 +62,15 @@ Scheduler.prototype.schedule = function schedule (id, task, options) {
 
   this._debug = options.debug || false
   this._frame = 0
+  framerate = Math.ceil(options.framerate || 60)
 
   if (this._debug) {
     console.log('Scheduling task', id)
+  }
+
+  if (framerate > 60) {
+    throw new RangeError('Framerate may not be higher than 60; Requested framerate is', framerate)
+    return
   }
 
   if (this.tasks[id]) {
@@ -73,7 +81,7 @@ Scheduler.prototype.schedule = function schedule (id, task, options) {
   this.tasks[id] = {
     context: options.context || window,
     paused: options.paused || false,
-    framerate: Math.min(Math.ceil(options.framerate), 60) || 60,
+    framerate: framerate,
     task: task
   }
 

@@ -122,6 +122,10 @@ describe('Scheduler', function () {
       })
     })
 
+    it('should schedule a task with a numeric ID', function () {
+      expect(scheduler.schedule(foo)).to.be.a('number')
+    })
+
     it('should error on duplicate IDs', function () {
       scheduler.schedule('foo', foo)
       expect(function () {
@@ -137,18 +141,27 @@ describe('Scheduler', function () {
       expect(Object.keys(scheduler.tasks).length).to.equal(3)
     })
 
-    it('should schedule a task with a frame rate', function () {
+    it('should schedule a task with a frame rate', function (done) {
       var count = 0
-      var speed = Math.floor(Math.random() * 60)
+      var framerate = Math.floor(Math.random() * 60)
 
       scheduler.schedule('foo', function () {
         count++
-      }, { speed: speed })
+      }, { framerate: framerate })
 
       setTimeout(function () {
         scheduler.unschedule('foo')
-        expect(count).to.be.closeTo(speed, 5)
+        expect(count).to.be.closeTo(framerate, 5)
+        done()
       }, 1000)
+    })
+
+    it('should error on framerates higher than 60', function () {
+      var framerate = Math.random() + 60
+
+      expect(function () {
+        scheduler.schedule('foo', foo, { framerate: framerate })
+      }).to.throw(RangeError)
     })
   })
 
