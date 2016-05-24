@@ -50,9 +50,20 @@ Scheduler = function Scheduler () {
       frames per second (fps)
 */
 Scheduler.prototype.schedule = function schedule (id, task, options) {
+  if (typeof id !== 'string') {
+    options = task
+    task = id
+    id = Object.keys(this.tasks).length
+  }
+
   options || (options = {})
 
+  this._debug = options.debug || false
   this._frame = 0
+
+  if (this._debug) {
+    console.log('Scheduling task', id)
+  }
 
   if (this.tasks[id]) {
     throw new RangeError('A task with the ID "' + id + '" already exists')
@@ -79,6 +90,10 @@ Scheduler.prototype.schedule = function schedule (id, task, options) {
   Remove a task from our loop. `id` is ID of the task to be removed from this `Scheduler`.
 */
 Scheduler.prototype.unschedule = function schedule (id) {
+  if (this._debug) {
+    console.log('Unscheduling task', id)
+  }
+
   delete this.tasks[id]
   return !this.tasks[id]
 }
@@ -94,6 +109,10 @@ Scheduler.prototype.unschedule = function schedule (id) {
   since this is a destructive operation.
 */
 Scheduler.prototype.clear = function schedule () {
+  if (this._debug) {
+    console.log('Clearing scheduler')
+  }
+
   this.tasks = {}
 }
 
@@ -107,7 +126,9 @@ Scheduler.prototype.clear = function schedule () {
   TODO: Describe
 */
 Scheduler.prototype.pause = function pause (id) {
-  console.log('Pausing', id || 'scheduler')
+  if (this._debug) {
+    console.log('Pausing task', id || 'scheduler')
+  }
 
   if (id) {
     this.tasks[id].paused = true
@@ -126,7 +147,9 @@ Scheduler.prototype.pause = function pause (id) {
   TODO: Describe
 */
 Scheduler.prototype.start = function start (id) {
-  console.log('Starting', id || 'scheduler')
+  if (this._debug) {
+    console.log('Starting', id || 'scheduler')
+  }
 
   if (id) {
     this.tasks[id].paused = false
