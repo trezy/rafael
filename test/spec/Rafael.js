@@ -4,14 +4,14 @@ var expect = chai.expect
 
 
 
-describe('Scheduler', function () {
-  var foo, isDone, scheduler
+describe('Rafael', function () {
+  var foo, isDone, rafael
 
 
 
 
   before(function () {
-    scheduler = new Scheduler
+    rafael = new Rafael
   })
 
   beforeEach(function () {
@@ -22,7 +22,7 @@ describe('Scheduler', function () {
   })
 
   afterEach(function () {
-    scheduler.clear()
+    rafael.clear()
   })
 
 
@@ -30,23 +30,23 @@ describe('Scheduler', function () {
 
 
   it('should have a method named "clear"', function () {
-    expect(scheduler.clear).to.be.a('function')
+    expect(rafael.clear).to.be.a('function')
   })
 
   it('should have a method named "pause"', function () {
-    expect(scheduler.pause).to.be.a('function')
+    expect(rafael.pause).to.be.a('function')
   })
 
   it('should have a method named "start"', function () {
-    expect(scheduler.start).to.be.a('function')
+    expect(rafael.start).to.be.a('function')
   })
 
   it('should have a method named "schedule"', function () {
-    expect(scheduler.schedule).to.be.a('function')
+    expect(rafael.schedule).to.be.a('function')
   })
 
   it('should have a method named "unschedule"', function () {
-    expect(scheduler.unschedule).to.be.a('function')
+    expect(rafael.unschedule).to.be.a('function')
   })
 
 
@@ -55,11 +55,11 @@ describe('Scheduler', function () {
 
   describe('.clear()', function () {
     it('should clear all tasks', function () {
-      scheduler.schedule('foo', foo)
-      scheduler.schedule('bar', foo)
-      scheduler.schedule('baz', foo)
-      scheduler.clear()
-      expect(scheduler.tasks).to.be.empty
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo)
+      rafael.clear()
+      expect(rafael.tasks).to.be.empty
     })
   })
 
@@ -69,19 +69,19 @@ describe('Scheduler', function () {
 
   describe('.pause()', function () {
     it('should pause all tasks', function () {
-      scheduler.schedule('foo', foo)
-      scheduler.schedule('bar', foo)
-      scheduler.schedule('baz', foo)
-      scheduler.pause()
-      expect(scheduler.paused).to.be.true
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo)
+      rafael.pause()
+      expect(rafael.paused).to.be.true
     })
 
     it('should pause a single task', function () {
-      scheduler.schedule('foo', foo)
-      scheduler.schedule('bar', foo)
-      scheduler.schedule('baz', foo)
-      scheduler.pause('foo')
-      expect(scheduler.tasks['foo'].paused).to.be.true
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo)
+      rafael.pause('foo')
+      expect(rafael.tasks['foo'].paused).to.be.true
     })
   })
 
@@ -91,21 +91,21 @@ describe('Scheduler', function () {
 
   describe('.start()', function () {
     it('should start all tasks', function () {
-      scheduler.schedule('foo', foo)
-      scheduler.schedule('bar', foo)
-      scheduler.schedule('baz', foo)
-      scheduler.pause()
-      scheduler.start()
-      expect(scheduler.paused).to.be.false
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo)
+      rafael.pause()
+      rafael.start()
+      expect(rafael.paused).to.be.false
     })
 
     it('should start a single task', function () {
-      scheduler.schedule('foo', foo)
-      scheduler.schedule('bar', foo)
-      scheduler.schedule('baz', foo)
-      scheduler.pause('foo')
-      scheduler.start('foo')
-      expect(scheduler.tasks['foo'].paused).to.be.false
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo)
+      rafael.pause('foo')
+      rafael.start('foo')
+      expect(rafael.tasks['foo'].paused).to.be.false
     })
   })
 
@@ -115,7 +115,7 @@ describe('Scheduler', function () {
 
   describe('.schedule()', function () {
     it('should schedule a task', function (done) {
-      scheduler.schedule('foo', function () {
+      rafael.schedule('foo', function () {
         if (!isDone) {
           isDone = true
           done()
@@ -124,34 +124,34 @@ describe('Scheduler', function () {
     })
 
     it('should schedule a task with a numeric ID', function () {
-      expect(scheduler.schedule(foo)).to.be.a('number')
+      expect(rafael.schedule(foo)).to.be.a('number')
     })
 
     it('should error on duplicate IDs', function () {
-      scheduler.schedule('foo', foo)
+      rafael.schedule('foo', foo)
       expect(function () {
-        scheduler.schedule('foo', foo)
+        rafael.schedule('foo', foo)
       }).to.throw(RangeError)
     })
 
     it('should be able to schedule multiple tasks', function () {
-      scheduler.schedule('foo', foo)
-      scheduler.schedule('bar', foo)
-      scheduler.schedule('baz', foo)
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo)
 
-      expect(Object.keys(scheduler.tasks).length).to.equal(3)
+      expect(Object.keys(rafael.tasks).length).to.equal(3)
     })
 
     it('should schedule a task with a frame rate', function (done) {
       var count = 0
       var framerate = Math.floor(Math.random() * 60)
 
-      scheduler.schedule('foo', function () {
+      rafael.schedule('foo', function () {
         count++
       }, { framerate: framerate })
 
       setTimeout(function () {
-        scheduler.unschedule('foo')
+        rafael.unschedule('foo')
         expect(count).to.be.closeTo(framerate, 5)
         done()
       }, 1000)
@@ -161,7 +161,7 @@ describe('Scheduler', function () {
       var framerate = Math.random() + 60
 
       expect(function () {
-        scheduler.schedule('foo', foo, { framerate: framerate })
+        rafael.schedule('foo', foo, { framerate: framerate })
       }).to.throw(RangeError)
     })
 
@@ -172,7 +172,7 @@ describe('Scheduler', function () {
         done()
       }
 
-      scheduler.schedule('foo', function () {
+      rafael.schedule('foo', function () {
         if (!isDone) {
           isDone = true
           this.secret = 'bar'
@@ -188,9 +188,9 @@ describe('Scheduler', function () {
 
   describe('.unschedule()', function () {
     it('should unschedule a task', function () {
-      scheduler.schedule('foo', foo)
-      scheduler.unschedule('foo')
-      expect(scheduler.tasks).to.be.empty
+      rafael.schedule('foo', foo)
+      rafael.unschedule('foo')
+      expect(rafael.tasks).to.be.empty
     })
   })
 })

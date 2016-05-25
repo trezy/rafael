@@ -5,7 +5,7 @@ module.exports = {
 
   js: {
     files: [
-      'Scheduler.js'
+      'Rafael.js'
     ],
     tasks: [
       'dist',
@@ -15,7 +15,7 @@ module.exports = {
 
   docs: {
     files: [
-      'dist/Scheduler.js'
+      'dist/Rafael.js'
     ],
     tasks: [
       'docs'
@@ -24,7 +24,7 @@ module.exports = {
 
   test: {
     files: [
-      'dist/Scheduler.js',
+      'dist/Rafael.js',
       'test/**/*.js'
     ],
     tasks: [
