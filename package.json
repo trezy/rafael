@@ -31,6 +31,7 @@
     "grunt-groc": "^0.5.0",
     "grunt-mocha": "latest",
     "grunt-umd": "^2.3.3",
+    "istanbul": "^0.4.3",
     "load-grunt-config": "^0.16.0",
     "mocha": "latest",
     "time-grunt": "^1.1.0"
