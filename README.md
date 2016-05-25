@@ -61,7 +61,7 @@ setTimeout(function () {
 
 Creates and returns a new instance of `Scheduler`.
 
-### `Scheduler.schedule(taskId, task[, context])`
+### `Scheduler.schedule(taskId, task[, options])`
 
 The `schedule()` method adds a task to the schedule, causing it to run on every iteration of the schedule loop. *Returns* the task's ID.
 
@@ -69,7 +69,15 @@ The `schedule()` method adds a task to the schedule, causing it to run on every 
 |---|---|---|
 | `taskId` | optional | A string used to manipulate the task within the context of the `Scheduler`. If an ID is not passed then the task's ID will be it's index in `Scheduler.tasks`. |
 | `task` | required | The function to be run. |
-| `context` | optional | A value to be used for `this` inside the task. |
+| `options` | optional | This is a hash of options to be considered for the task. |
+
+#### Options
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `context` | Object | `window` | The value of `this` within the task |
+| `framerate` | Number | `60` | The number of times the task should run per second. Max is 60. |
+| `paused` | Boolean | `false` | Whether or not the task should start immediately. Tasks that receive `paused` can be kicked off with `Scheduler.start`. |
 
 ### `Scheduler.unschedule(taskId)`
 
