@@ -1,21 +1,21 @@
 /*
-# Scheduler v3.0.0
+# Rafael v3.0.0
 */
-var Scheduler
+var Rafael
 
 
 
 
 
 /*
-  ## `new Scheduler`
+  ## `new Rafael`
 
-  `Scheduler.tasks` maintains a record of all currently running tasks
-  associated with this scheduler.
+  `Rafael.tasks` maintains a record of all currently running tasks
+  associated with this instance of Rafael.
 
-  This will kick off the `Scheduler`'s loop to constantly run tasks.
+  This will kick off the `Rafael`'s loop to constantly run tasks.
 */
-Scheduler = function Scheduler () {
+Rafael = function Rafael () {
   this.paused = false
   this.tasks = {}
   this._startLoop = this._startLoop.bind(this)
@@ -27,7 +27,7 @@ Scheduler = function Scheduler () {
 
 
 /*
-  ## `Scheduler.schedule(taskId, task, options)`
+  ## `Rafael.schedule(taskId, task, options)`
 
   Schedule a task to be run in our loop. It takes up to three arguments:
   `taskId`, `task`, and `options`.
@@ -36,7 +36,7 @@ Scheduler = function Scheduler () {
   later on. If an ID isn't set then it will be the index of the new task in
   `this.tasks`.
 
-  * `task` (required) is the function to be run on this `Scheduler`.
+  * `task` (required) is the function to be run on this `Rafael`.
 
   * `options` (optional) is a hash of options thingies?
 
@@ -49,7 +49,7 @@ Scheduler = function Scheduler () {
       * `framerate` (optional) is the speed at which the task should be run in
       frames per second (fps)
 */
-Scheduler.prototype.schedule = function schedule (id, task, options) {
+Rafael.prototype.schedule = function schedule (id, task, options) {
   var framerate
 
   if (typeof id !== 'string') {
@@ -93,11 +93,11 @@ Scheduler.prototype.schedule = function schedule (id, task, options) {
 
 
 /*
-  ## `Scheduler.unschedule(id)`
+  ## `Rafael.unschedule(id)`
 
-  Remove a task from our loop. `id` is ID of the task to be removed from this `Scheduler`.
+  Remove a task from our loop. `id` is ID of the task to be removed from this `Rafael`.
 */
-Scheduler.prototype.unschedule = function schedule (id) {
+Rafael.prototype.unschedule = function schedule (id) {
   if (this._debug) {
     console.log('Unscheduling task', id)
   }
@@ -111,14 +111,14 @@ Scheduler.prototype.unschedule = function schedule (id) {
 
 
 /*
-  ## `Scheduler.clear()`
+  ## `Rafael.clear()`
 
-  Remove all tasks from the `Scheduler`. We just overwrite the original array
+  Remove all tasks from the `Rafael`. We just overwrite the original array
   since this is a destructive operation.
 */
-Scheduler.prototype.clear = function schedule () {
+Rafael.prototype.clear = function schedule () {
   if (this._debug) {
-    console.log('Clearing scheduler')
+    console.log('Clearing tasks')
   }
 
   this.tasks = {}
@@ -129,13 +129,13 @@ Scheduler.prototype.clear = function schedule () {
 
 
 /*
-  ## `Scheduler.pause(id)`
+  ## `Rafael.pause(id)`
 
   TODO: Describe
 */
-Scheduler.prototype.pause = function pause (id) {
+Rafael.prototype.pause = function pause (id) {
   if (this._debug) {
-    console.log('Pausing task', id || 'scheduler')
+    console.log('Pausing', id || 'all tasks')
   }
 
   if (id) {
@@ -150,13 +150,13 @@ Scheduler.prototype.pause = function pause (id) {
 
 
 /*
-  ## `Scheduler.start(id)`
+  ## `Rafael.start(id)`
 
   TODO: Describe
 */
-Scheduler.prototype.start = function start (id) {
+Rafael.prototype.start = function start (id) {
   if (this._debug) {
-    console.log('Starting', id || 'scheduler')
+    console.log('Starting', id || 'all tasks')
   }
 
   if (id) {
@@ -171,11 +171,11 @@ Scheduler.prototype.start = function start (id) {
 
 
 /*
-  ## `Scheduler._taskCaller(taskObject)`
+  ## `Rafael._taskCaller(taskObject)`
 
-  Start the loop `requestAnimationFrame` loop for this `Scheduler`.
+  Start the loop `requestAnimationFrame` loop for this `Rafael`.
 */
-Scheduler.prototype._taskCaller = function _taskCaller (taskObject) {
+Rafael.prototype._taskCaller = function _taskCaller (taskObject) {
   taskObject.task.call(taskObject.context)
 }
 
@@ -184,11 +184,11 @@ Scheduler.prototype._taskCaller = function _taskCaller (taskObject) {
 
 
 /*
-  ## `Scheduler._startLoop()`
+  ## `Rafael._startLoop()`
 
-  Start the loop `requestAnimationFrame` loop for this `Scheduler`.
+  Start the loop `requestAnimationFrame` loop for this `Rafael`.
 */
-Scheduler.prototype._startLoop = function _startLoop () {
+Rafael.prototype._startLoop = function _startLoop () {
   var i, schedule, tasks
 
   schedule = this
@@ -216,11 +216,11 @@ Scheduler.prototype._startLoop = function _startLoop () {
 
 
 /*
-  ## `Scheduler._shouldRun()`
+  ## `Rafael._shouldRun()`
 
   Compares the passed in framerate against the current frame to determine if the
   task should run on this frame
 */
-Scheduler.prototype._shouldRun = function _shouldRun (framerate) {
+Rafael.prototype._shouldRun = function _shouldRun (framerate) {
   return !(Math.floor(this._frame % (60 / framerate)))
 }

@@ -1,6 +1,6 @@
 module.exports = {
   javascript: [
-    'Scheduler.js'
+    'Rafael.js'
   ],
 
   options: {

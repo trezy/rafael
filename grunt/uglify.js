@@ -1,7 +1,7 @@
 module.exports = {
   schedule: {
     files: {
-      'dist/Scheduler.min.js': ['dist/Scheduler.js']
+      'dist/Rafael.min.js': ['dist/Rafael.js']
     }
   }
 }

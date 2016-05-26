@@ -1,26 +1,26 @@
 {
-  "name": "scheduler.js",
-  "main": "dist/Scheduler.js",
-  "version": "3.0.4",
+  "name": "rafael",
+  "main": "./dist/Rafael.min.js",
+  "version": "4.0.0",
   "authors": [
     "Trezy <tre@trezy.com>"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trezy/Scheduler.js.git"
+    "url": "git+https://github.com/trezy/Rafael.js.git"
   },
   "bugs": {
-    "url": "https://github.com/trezy/Scheduler.js/issues"
+    "url": "https://github.com/trezy/Rafael.js/issues"
   },
-  "homepage": "https://github.com/trezy/Scheduler.js#readme",
+  "homepage": "https://github.com/trezy/Rafael.js#readme",
   "license": "MIT",
-  "description": "Scheduler.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
+  "description": "Rafael.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
   "scripts": {
     "dev": "$(npm bin)/grunt dev",
     "test": "$(npm bin)/grunt test:test",
     "postinstall": "npm prune"
   },
-  "devDependencies": {
+  "dependencies": {
     "chai": "latest",
     "grunt": "^0.4.5",
     "grunt-bump": "^0.3.1",

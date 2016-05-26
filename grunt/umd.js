@@ -1,10 +1,10 @@
 module.exports = {
   schedule: {
     options: {
-      amdModuleId: 'scheduler',
-      objectToExport: 'Scheduler',
-      src: 'Scheduler.js',
-      dest: 'dist/Scheduler.js'
+      amdModuleId: 'rafael',
+      objectToExport: 'Rafael',
+      src: 'Rafael.js',
+      dest: 'dist/Rafael.js'
     }
   }
 }
