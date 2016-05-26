@@ -1,7 +1,7 @@
 {
   "name": "rafael",
   "main": "./dist/Rafael.min.js",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "authors": [
     "Trezy <tre@trezy.com>"
   ],
@@ -27,7 +27,7 @@
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-groc": "^0.5.0",
+    "grunt-groc": "^0.6.0",
     "grunt-mocha": "^1.0.2",
     "grunt-umd": "^2.3.3",
     "load-grunt-config": "^0.19.2",
