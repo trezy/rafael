@@ -1,7 +1,7 @@
 {
   "name": "rafael",
   "main": "./dist/Rafael.min.js",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "authors": [
     "Trezy <tre@trezy.com>"
   ],
@@ -24,13 +24,13 @@
     "chai": "^3.5.0",
     "grunt": "^1.0.1",
     "grunt-bump": "^0.8.0",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-uglify": "^0.8.1",
-    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
     "grunt-groc": "^0.5.0",
     "grunt-mocha": "^1.0.2",
     "grunt-umd": "^2.3.3",
-    "load-grunt-config": "^0.16.0",
+    "load-grunt-config": "^0.19.2",
     "mocha": "^2.5.3",
     "time-grunt": "^1.1.0"
   }
