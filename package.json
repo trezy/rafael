@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/trezy/Rafael.js#readme",
   "license": "MIT",
-  "description": "Rafael.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
+  "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "scripts": {
     "dev": "$(npm bin)/grunt dev",
     "test": "$(npm bin)/grunt test:test",
