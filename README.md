@@ -3,11 +3,11 @@
 </p>
 
 <p align="center">
-  [![Travis CI Build](https://img.shields.io/travis/trezy/rafael.svg?style=flat-square)]()
-  [![npm](https://img.shields.io/npm/dt/rafael.svg?style=flat-square)]()
-  [![Bower](https://img.shields.io/bower/v/rafael.svg?style=flat-square)]()
-  [![Open Github Issues](https://img.shields.io/github/issues/trezy/rafael.svg?style=flat-square)]()
-  [![Bower](https://img.shields.io/david/trezy/rafael.svg?style=flat-square)]()
+  <img alt="Travis CI Build" src="https://img.shields.io/travis/trezy/rafael.svg?style=flat-square">
+  <img alt="npm" src="https://img.shields.io/npm/dt/rafael.svg?style=flat-square">
+  <img alt="Bower" src="https://img.shields.io/bower/v/rafael.svg?style=flat-square">
+  <img alt="Open Github Issues" src="https://img.shields.io/github/issues/trezy/rafael.svg?style=flat-square">
+  <img alt="Dependencies" src="https://img.shields.io/david/trezy/rafael.svg?style=flat-square">
 </p>
 
 Rafael.js is a simple client side rafael based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop. Typically you may use something like [`window.setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setInterval) or [`window.setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout) to achieve this.
