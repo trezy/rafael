@@ -17,6 +17,7 @@
   "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "scripts": {
     "dev": "$(npm bin)/grunt dev",
+    "pretest": "$(npm bin)/grunt build",
     "test": "$(npm bin)/grunt test:test",
     "postinstall": "npm prune"
   },
