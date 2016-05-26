@@ -1,12 +1,12 @@
 {
   "name": "rafael",
   "main": "dist/Rafael.js",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "authors": [
     "Trezy <tre@trezy.com>"
   ],
   "license": "MIT",
-  "description": "Rafael.js is a simple scheduling library based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop.",
+  "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "ignore": [
     "**/.*",
     "node_modules",
