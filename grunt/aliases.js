@@ -24,6 +24,21 @@ module.exports = {
     'groc'
   ],
 
+  major: [
+    'bump:major',
+    'releaseable'
+  ],
+
+  minor: [
+    'bump:minor',
+    'releaseable'
+  ],
+
+  patch: [
+    'bump',
+    'releaseable'
+  ],
+
   test: [
     'mocha:test'
   ]

@@ -1,14 +1,17 @@
 module.exports = {
   options: {
+    commit: true,
     commitFiles: [
       'package.json',
       'bower.json'
     ],
+    createTag: false,
     files: [
       'package.json',
       'bower.json'
     ],
-    pushTo: 'origin',
+    push: true,
+    pushTo: 'upstream',
     syncVersions: true
   }
 }
