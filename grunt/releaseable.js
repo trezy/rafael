@@ -1,3 +1,5 @@
 module.exports = {
-  dist: {}
+  dist: {
+    dryRun: true
+  }
 }
