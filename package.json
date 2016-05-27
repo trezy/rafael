@@ -1,7 +1,7 @@
 {
   "name": "rafael",
   "main": "./dist/Rafael.min.js",
-  "version": "4.2.6",
+  "version": "4.2.5",
   "authors": [
     "Trezy <tre@trezy.com>"
   ],
@@ -34,7 +34,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-groc": "^0.6.0",
     "grunt-mocha": "^1.0.2",
-    "grunt-releaseable": "0.0.16",
+    "grunt-releaseable": "trezy/grunt-releaseable",
     "grunt-umd": "^2.3.3",
     "load-grunt-config": "^0.19.2",
     "mocha": "^2.5.3",
