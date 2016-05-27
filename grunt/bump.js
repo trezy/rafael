@@ -11,7 +11,7 @@ module.exports = {
       'bower.json'
     ],
     push: true,
-    pushTo: 'upstream',
+    pushTo: 'origin',
     syncVersions: true
   }
 }
