@@ -1,3 +1,5 @@
 module.exports = {
-  dist: {}
+  dist: {
+    files: ['dist/**/*']
+  }
 }
