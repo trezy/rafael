@@ -4,28 +4,27 @@ module.exports = {
   ],
 
   build: [
-    'dist',
-    'docs'
+    'babel',
+    'uglify'
   ],
 
   dev: [
+    'build',
     'test',
     'watch'
   ],
 
   dist: [
-    'umd',
-    'uglify'
+    'build',
+    'docs'
   ],
 
   docs: [
     'clean:docs',
-    'groc',
-    //'mocha:coverage'
+    'groc'
   ],
 
   test: [
-    'dist',
     'mocha:test'
   ]
 }

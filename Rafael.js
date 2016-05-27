@@ -224,3 +224,9 @@ Rafael.prototype._startLoop = function _startLoop () {
 Rafael.prototype._shouldRun = function _shouldRun (framerate) {
   return !(Math.floor(this._frame % (60 / framerate)))
 }
+
+
+
+
+
+module.exports = Rafael
