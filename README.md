@@ -3,9 +3,6 @@
 </p>
 
 <p align="center">
-  <a href="">
-    <img alt="Travis CI Build" src="https://img.shields.io/travis/trezy/rafael.svg?style=flat-square">
-  </a>
 <!--  <img alt="Downloads" src="https://img.shields.io/npm/dt/rafael.svg?style=flat-square">-->
   <a href="https://www.npmjs.com/package/rafael">
     <img alt="npm" src="https://img.shields.io/npm/v/rafael.svg?style=flat-square">
@@ -13,11 +10,14 @@
   <a href="http://bower.io/search/?q=rafael">
     <img alt="Bower" src="https://img.shields.io/bower/v/rafael.svg?style=flat-square">
   </a>
+  <a href="https://github.com/trezy/rafael/issues">
+    <img alt="Open Github Issues" src="https://img.shields.io/github/issues/trezy/rafael.svg?style=flat-square">
+  </a>
   <a href="https://david-dm.org/trezy/rafael">
     <img alt="Dependencies" src="https://img.shields.io/david/trezy/rafael.svg?style=flat-square">
   </a>
-  <a href="https://github.com/trezy/rafael/issues">
-    <img alt="Open Github Issues" src="https://img.shields.io/github/issues/trezy/rafael.svg?style=flat-square">
+  <a href="">
+    <img alt="Travis CI Build" src="https://img.shields.io/travis/trezy/rafael.svg?style=flat-square">
   </a>
 </p>
 
