@@ -17,12 +17,17 @@
   "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "scripts": {
     "dev": "$(npm bin)/grunt dev",
+    "pretest": "$(npm bin)/grunt build",
     "test": "$(npm bin)/grunt test:test",
     "postinstall": "npm prune"
   },
   "dependencies": {
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
     "chai": "^3.5.0",
     "grunt": "^1.0.1",
+    "grunt-babel": "^6.0.0",
     "grunt-bump": "^0.8.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
