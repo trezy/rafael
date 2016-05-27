@@ -1,7 +1,7 @@
 {
   "name": "rafael",
   "main": "./dist/Rafael.min.js",
-  "version": "4.2.7",
+  "version": "4.2.8",
   "authors": [
     "Trezy <tre@trezy.com>"
   ],
@@ -16,8 +16,9 @@
   "license": "MIT",
   "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "scripts": {
+    "deploy": "node ./deploy.js",
     "dev": "$(npm bin)/grunt dev",
-    "prepublish": "$(npm bin)/grunt build && node ./deploy.js",
+    "prepublish": "$(npm bin)/grunt build",
     "pretest": "$(npm bin)/grunt build",
     "test": "$(npm bin)/grunt test:test"
   },
