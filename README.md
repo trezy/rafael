@@ -16,7 +16,7 @@
   <a href="https://david-dm.org/trezy/rafael">
     <img alt="Dependencies" src="https://img.shields.io/david/trezy/rafael.svg?style=flat-square">
   </a>
-  <a href="">
+  <a href="https://travis-ci.org/trezy/rafael">
     <img alt="Travis CI Build" src="https://img.shields.io/travis/trezy/rafael.svg?style=flat-square">
   </a>
 </p>
