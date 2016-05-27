@@ -18,6 +18,7 @@
   "scripts": {
     "dev": "$(npm bin)/grunt dev",
     "prepublish": "$(npm bin)/grunt build",
+    "pretest": "$(npm bin)/grunt build",
     "test": "$(npm bin)/grunt test:test"
   },
   "dependencies": {
