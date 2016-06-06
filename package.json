@@ -7,12 +7,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/trezy/Rafael.js.git"
+    "url": "git+https://github.com/trezy/rafael.git"
   },
   "bugs": {
-    "url": "https://github.com/trezy/Rafael.js/issues"
+    "url": "https://github.com/trezy/rafael/issues"
   },
-  "homepage": "https://github.com/trezy/Rafael.js#readme",
+  "homepage": "https://github.com/trezy/rafael#readme",
   "license": "MIT",
   "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "scripts": {
