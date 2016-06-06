@@ -18,7 +18,8 @@
   "scripts": {
     "deploy": "node ./deploy.js",
     "dev": "$(npm bin)/grunt dev",
-    "prepublish": "$(npm bin)/grunt build",
+    "postinstall": "npm prune",
+    "prepublish": "npm test",
     "pretest": "$(npm bin)/grunt build",
     "test": "$(npm bin)/grunt test:test"
   },

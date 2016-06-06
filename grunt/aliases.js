@@ -16,6 +16,7 @@ module.exports = {
 
   dist: [
     'build',
+    'test',
     'docs'
   ],
 
