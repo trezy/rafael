@@ -4,25 +4,15 @@ var expect = chai.expect
 
 
 
-describe('Rafael', function () {
-  var foo, isDone, rafael
+describe('Sanity Check', function () {
+  var rafael
+
 
 
 
 
   before(function () {
     rafael = new Rafael
-  })
-
-  beforeEach(function () {
-    isDone = false
-    foo = function () {
-      return true
-    }
-  })
-
-  afterEach(function () {
-    rafael.clear()
   })
 
 
@@ -47,6 +37,32 @@ describe('Rafael', function () {
 
   it('should have a method named "unschedule"', function () {
     expect(rafael.unschedule).to.be.a('function')
+  })
+})
+
+
+
+
+
+describe('Rafael', function () {
+  var foo, isDone, rafael
+
+
+
+
+  before(function () {
+    rafael = new Rafael
+  })
+
+  beforeEach(function () {
+    isDone = false
+    foo = function () {
+      return true
+    }
+  })
+
+  afterEach(function () {
+    rafael.clear()
   })
 
 
@@ -123,7 +139,7 @@ describe('Rafael', function () {
       })
     })
 
-    it('should schedule a task with a numeric ID', function () {
+    it('should schedule a task even without an ID', function () {
       expect(rafael.schedule(foo)).to.be.a('number')
     })
 
@@ -134,7 +150,7 @@ describe('Rafael', function () {
       }).to.throw(RangeError)
     })
 
-    it('should be able to schedule multiple tasks', function () {
+    it('should schedule multiple tasks', function () {
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
       rafael.schedule('baz', foo)
@@ -142,7 +158,7 @@ describe('Rafael', function () {
       expect(Object.keys(rafael.tasks).length).to.equal(3)
     })
 
-    it('should schedule a task with a frame rate', function (done) {
+    it('should schedule a task with a framerate', function (done) {
       var count = 0
       var framerate = Math.floor(Math.random() * 60)
 
@@ -155,6 +171,21 @@ describe('Rafael', function () {
         expect(count).to.be.closeTo(framerate, 5)
         done()
       }, 1000)
+    })
+
+    it('should schedule a task with a framerate lower than 1', function () {
+      var count = 0
+      var framerate = Math.random()
+
+      rafael.schedule('foo', function () {
+        count++
+      }, { framerate: framerate })
+
+      setTimeout(function () {
+        rafael.unschedule('foo')
+        expect(count).to.be.closeTo(1, 0.5)
+        done()
+      }, 3000)
     })
 
     it('should error on framerates higher than 60', function () {

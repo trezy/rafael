@@ -62,7 +62,7 @@ Rafael.prototype.schedule = function schedule (id, task, options) {
 
   this._debug = options.debug || false
   this._frame = 0
-  framerate = Math.ceil(options.framerate || 60)
+  framerate = options.framerate || 60
 
   if (this._debug) {
     console.log('Scheduling task', id)
