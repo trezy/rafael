@@ -1,7 +1,7 @@
 {
   "name": "rafael",
   "main": "./dist/Rafael.min.js",
-  "version": "4.2.9",
+  "version": "4.2.10",
   "authors": [
     "Trezy <tre@trezy.com>"
   ],
