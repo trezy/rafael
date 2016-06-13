@@ -1,4 +1,4 @@
-var _, expect
+var expect
 
 
 
@@ -51,20 +51,52 @@ describe('Sanity Check', function () {
 
 
 describe('Rafael', function () {
-  var foo, isDone, rafael
+  var foo, generateID, isDone, rafael, scheduleSlowTasks, scheduleTasks
+
 
 
 
 
   before(function () {
     rafael = new Rafael
+
+    foo = function () {
+      return true
+    }
+
+    generateID = function () {
+      return parseInt((performance.now() * 10000000000).toFixed()).toString(36)
+    }
+
+    scheduleTasks = function scheduleTasks (taskCount) {
+      var i, tasksCreated
+
+      taskCount || (taskCount = 1)
+      tasksCreated = []
+
+      for (i = 0; i < taskCount; i++) {
+        tasksCreated.push(rafael.schedule(generateID(), foo, { framerate: (Math.random() * 59) + 1 }))
+      }
+
+      return tasksCreated
+    }
+
+    scheduleSlowTasks = function scheduleTasks (taskCount) {
+      var i, tasksCreated
+
+      tasksCreated = []
+      taskCount || (taskCount = 1)
+
+      for (i = 0; i < taskCount; i++) {
+        tasksCreated.push(rafael.schedule(generateID(), foo, { framerate: Math.random() }))
+      }
+
+      return tasksCreated
+    }
   })
 
   beforeEach(function () {
     isDone = false
-    foo = function () {
-      return true
-    }
   })
 
   afterEach(function () {
@@ -77,9 +109,8 @@ describe('Rafael', function () {
 
   describe('.clear()', function () {
     it('should clear all tasks', function () {
-      rafael.schedule('foo', foo)
-      rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, { framerate: Math.random() })
+      scheduleTasks(2)
+      scheduleSlowTasks(2)
       rafael.clear()
 
       expect(rafael.tasks).to.be.empty
@@ -94,71 +125,90 @@ describe('Rafael', function () {
 
   describe('.pause()', function () {
     it('should pause all tasks', function () {
-      rafael.schedule('foo', foo)
-      rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, { framerate: Math.random() })
+      scheduleTasks(2)
+      scheduleSlowTasks(2)
       rafael.pause()
 
       expect(rafael.paused).to.be.true
     })
 
     it('should pause a single task', function () {
-      rafael.schedule('foo', foo)
-      rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, { framerate: Math.random() })
-      rafael.schedule('bat', foo, { framerate: Math.random() })
-      rafael.pause('foo')
+      var i, numTasks, slowTasks, tasks, taskToPause
 
-      expect(rafael.tasks['foo'].paused).to.be.true
-      expect(rafael.tasks['bar'].paused).to.be.false
-      expect(rafael.slowTasks['baz'].paused).to.be.false
-      expect(rafael.slowTasks['bat'].paused).to.be.false
+      numTasks = 3
+      taskToPause = 0
+
+      tasks = scheduleTasks(numTasks)
+      slowTasks = scheduleSlowTasks(numTasks)
+      rafael.pause(tasks[taskToPause])
+
+      for (i = 0; i < numTasks; i++) {
+        if (i === taskToPause) {
+          expect(rafael.tasks[tasks[i]].paused).to.be.true
+
+        } else {
+          expect(rafael.tasks[tasks[i]].paused).to.be.false
+        }
+
+        expect(rafael.slowTasks[slowTasks[i]].paused).to.be.false
+      }
     })
 
     it('should pause a single slow task', function () {
-      rafael.schedule('foo', foo)
-      rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, { framerate: Math.random() })
-      rafael.schedule('bat', foo, { framerate: Math.random() })
-      rafael.pause('baz')
+      var i, numTasks, slowTasks, tasks, taskToPause
 
-      expect(rafael.tasks['foo'].paused).to.be.false
-      expect(rafael.tasks['bar'].paused).to.be.false
-      expect(rafael.slowTasks['baz'].paused).to.be.true
-      expect(rafael.slowTasks['bat'].paused).to.be.false
+      numTasks = 3
+      taskToPause = 0
+
+      tasks = scheduleTasks(numTasks)
+      slowTasks = scheduleSlowTasks(numTasks)
+      rafael.pause(slowTasks[taskToPause])
+
+      for (i = 0; i < numTasks; i++) {
+        if (i === taskToPause) {
+          expect(rafael.slowTasks[slowTasks[i]].paused).to.be.true
+
+        } else {
+          expect(rafael.slowTasks[slowTasks[i]].paused).to.be.false
+        }
+
+        expect(rafael.tasks[tasks[i]].paused).to.be.false
+      }
     })
 
     it('should delete the interval if all relevant slow tasks are paused', function () {
-      var framerate
+      var framerates, i, numTasks, slowTasks, tasks
 
-      framerate = Math.random()
+      framerates = []
+      numTasks = 3
 
-      rafael.schedule('foo', foo)
-      rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, { framerate: framerate })
-      rafael.schedule('bat', foo, { framerate: framerate })
-      rafael.pause('baz')
-      rafael.pause('bat')
+      tasks = scheduleTasks(numTasks)
+      slowTasks = scheduleSlowTasks(numTasks)
 
-      expect(rafael.tasks['foo'].paused).to.be.false
-      expect(rafael.tasks['bar'].paused).to.be.false
-      expect(rafael.slowTasks['baz'].paused).to.be.true
-      expect(rafael.slowTasks['bat'].paused).to.be.true
-      expect(rafael.intervals[framerate]).to.not.exist
+      slowTasks.forEach(function (taskID) {
+        framerates.push(rafael.slowTasks[taskID].framerate)
+        rafael.pause(taskID)
+      })
+
+      framerates.forEach(function (framerate) {
+        expect(rafael.intervals[framerate]).to.not.exist
+      })
     })
 
     it('shouldn\'t fail when trying to pause a task that\'s already paused', function () {
-      rafael.schedule('foo', foo)
-      rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, { framerate: Math.random() })
-      rafael.schedule('bat', foo, { framerate: Math.random() })
-      rafael.pause('baz')
-      rafael.pause('baz')
+      var numTasks, slowTasks, tasks, taskToPause
 
-      expect(rafael.tasks['foo'].paused).to.be.false
-      expect(rafael.tasks['bar'].paused).to.be.false
-      expect(rafael.slowTasks['baz'].paused).to.be.true
-      expect(rafael.slowTasks['bat'].paused).to.be.false
+      numTasks = 3
+      taskToPause = 0
+
+      tasks = scheduleTasks(numTasks)
+      slowTasks = scheduleSlowTasks(numTasks)
+
+      rafael.pause(slowTasks[taskToPause])
+
+      expect(function () {
+        rafael.pause(slowTasks[taskToPause])
+      }).to.not.throw(Error)
     })
   })
 
@@ -168,36 +218,47 @@ describe('Rafael', function () {
 
   describe('.start()', function () {
     it('should start all tasks', function () {
-      var framerate
+      var framerates, slowTasks, tasks
 
-      framerate = Math.random()
+      framerates = []
 
-      rafael.schedule('foo', foo)
-      rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, {framerate: framerate})
-      rafael.schedule('bat', foo, {framerate: framerate})
+      tasks = scheduleTasks(2)
+      slowTasks = scheduleSlowTasks(2)
       rafael.pause()
       rafael.start()
 
-      expect(rafael.tasks['foo'].paused).to.be.false
-      expect(rafael.tasks['bar'].paused).to.be.false
-      expect(rafael.slowTasks['baz'].paused).to.be.false
-      expect(rafael.slowTasks['bat'].paused).to.be.false
-      expect(rafael.intervals[framerate]).to.exist
+      slowTasks.forEach(function (taskID) {
+        framerates.push(rafael.slowTasks[taskID].framerate)
+      })
+
+      expect(rafael.paused).to.be.false
+
+      framerates.forEach(function (framerate) {
+        expect(rafael.intervals[framerate]).to.exist
+      })
     })
 
     it('should start a single task', function () {
-      rafael.schedule('foo', foo)
-      rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, {framerate: Math.random()})
-      rafael.schedule('bat', foo, {framerate: Math.random()})
-      rafael.pause('foo')
-      rafael.start('foo')
+      var i, numTasks, slowTasks, tasks, taskToStart
 
-      expect(rafael.tasks['foo'].paused).to.be.false
-      expect(rafael.tasks['bar'].paused).to.be.false
-      expect(rafael.slowTasks['baz'].paused).to.be.false
-      expect(rafael.slowTasks['bat'].paused).to.be.false
+      numTasks = 3
+      taskToStart = 0
+
+      tasks = scheduleTasks(numTasks)
+      slowTasks = scheduleSlowTasks(numTasks)
+      rafael.pause()
+      rafael.start(tasks[taskToStart])
+
+      for (i = 0; i < numTasks; i++) {
+        if (i === taskToStart) {
+          expect(rafael.tasks[tasks[i]].paused).to.be.true
+
+        } else {
+          expect(rafael.tasks[tasks[i]].paused).to.be.false
+        }
+
+        expect(rafael.slowTasks[slowTasks[i]].paused).to.be.false
+      }
     })
 
     it('should start a single slow task', function () {
