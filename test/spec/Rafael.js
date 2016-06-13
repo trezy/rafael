@@ -83,7 +83,14 @@ describe('Rafael', function () {
       expect(rafael.intervals).to.be.empty
     })
 
-    xit('should clear a single task', function () {})
+    it('should clear a single task', function () {
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo)
+      rafael.clear('foo')
+
+      expect(rafael.tasks['foo']).to.not.exist
+    })
 
     xit('should clear a single slow task', function () {})
   })
