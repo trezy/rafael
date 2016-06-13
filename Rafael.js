@@ -18,6 +18,8 @@ var Rafael
 Rafael = function Rafael () {
   this.paused = false
   this.tasks = {}
+  this.slowTasks = {}
+  this.intervals = {}
   this._startLoop = this._startLoop.bind(this)
   this._startLoop()
 }
@@ -50,7 +52,7 @@ Rafael = function Rafael () {
       frames per second (fps)
 */
 Rafael.prototype.schedule = function schedule (id, task, options) {
-  var framerate
+  var framerate, task
 
   if (typeof id !== 'string') {
     options = task
@@ -78,11 +80,19 @@ Rafael.prototype.schedule = function schedule (id, task, options) {
     return
   }
 
-  this.tasks[id] = {
+  task = {
     context: options.context || window,
     paused: options.paused || false,
     framerate: framerate,
     task: task
+  }
+
+  if (framerate >= 1) {
+    this.tasks[id] = task
+
+  } else {
+    this.slowTasks[id] = task
+    this._startSlowTask(id)
   }
 
   return id
@@ -97,12 +107,20 @@ Rafael.prototype.schedule = function schedule (id, task, options) {
 
   Remove a task from our loop. `id` is ID of the task to be removed from this `Rafael`.
 */
-Rafael.prototype.unschedule = function schedule (id) {
+Rafael.prototype.unschedule = function unschedule (id) {
   if (this._debug) {
     console.log('Unscheduling task', id)
   }
 
-  delete this.tasks[id]
+  if (this.tasks[id]) {
+    delete this.tasks[id]
+  }
+
+  if (this.slowTasks[id]) {
+    this._pauseSlowTask(id)
+    delete this.slowTasks[id]
+  }
+
   return !this.tasks[id]
 }
 
@@ -116,12 +134,26 @@ Rafael.prototype.unschedule = function schedule (id) {
   Remove all tasks from the `Rafael`. We just overwrite the original array
   since this is a destructive operation.
 */
-Rafael.prototype.clear = function schedule () {
+Rafael.prototype.clear = function clear () {
+  var i, interval, intervalID, intervalIDs, intervals
+
   if (this._debug) {
     console.log('Clearing tasks')
   }
 
   this.tasks = {}
+  this.slowTasks = {}
+
+  intervals = this.intervals
+  intervalIDs = Object.keys(intervals)
+
+  for (i = 0; i < intervalIDs.length; i++) {
+    intervalID = intervalIDs[i]
+    interval = intervals[intervalID]
+
+    clearInterval(interval.timer)
+    delete this.intervals[intervalID]
+  }
 }
 
 
@@ -139,7 +171,14 @@ Rafael.prototype.pause = function pause (id) {
   }
 
   if (id) {
-    this.tasks[id].paused = true
+    if (this.tasks[id]) {
+      this.tasks[id].paused = true
+    }
+
+    if (this.slowTasks[id]) {
+      this.slowTasks[id].paused = true
+      this._pauseSlowTask(id)
+    }
   } else {
     this.paused = true
   }
@@ -160,7 +199,15 @@ Rafael.prototype.start = function start (id) {
   }
 
   if (id) {
-    this.tasks[id].paused = false
+    if (this.tasks[id] && this.tasks[id].paused) {
+      this.tasks[id].paused = false
+    }
+
+    if (this.slowTasks[id] && this.slowTasks[id].paused) {
+      this.slowTasks[id].paused = false
+      this._startSlowTask(id)
+    }
+
   } else {
     this.paused = false
   }
@@ -173,7 +220,7 @@ Rafael.prototype.start = function start (id) {
 /*
   ## `Rafael._taskCaller(taskObject)`
 
-  Start the loop `requestAnimationFrame` loop for this `Rafael`.
+  TODO: Don't lie.
 */
 Rafael.prototype._taskCaller = function _taskCaller (taskObject) {
   taskObject.task.call(taskObject.context)
@@ -208,6 +255,113 @@ Rafael.prototype._startLoop = function _startLoop () {
     }
 
     this._frame++
+  }
+}
+
+
+
+
+
+
+/*
+  ## `Rafael._startSlowTask()`
+
+  TODO: Don't procrastinate, you tard.
+*/
+Rafael.prototype._startSlowTask = function _startSlowTask (id) {
+  var framerate, interval, task, tasks
+
+  task = this.slowTasks[id]
+  framerate = task.framerate
+
+  if (task.paused) {
+    return
+  }
+
+  if (!this.intervals[framerate]) {
+    this._registerInterval(framerate)
+  }
+
+  tasks = this.intervals[framerate].tasks
+
+  if (tasks.indexOf(id) === -1) {
+    tasks.push(id)
+  }
+}
+
+
+
+
+
+
+/*
+  ## `Rafael._pauseSlowTask()`
+
+  TODO: Don't procrastinate, you tard.
+*/
+Rafael.prototype._pauseSlowTask = function _pauseSlowTask (id) {
+  var framerate, interval, task, tasks
+
+  task = this.slowTasks[id]
+  framerate = task.framerate
+
+  if (!this.intervals[framerate]) {
+    return
+  }
+
+  tasks = this.intervals[framerate].tasks
+
+  tasks.splice(tasks.indexOf(id), 1)
+
+  if (!tasks.length) {
+    delete this.intervals[framerate]
+  }
+}
+
+
+
+
+
+
+/*
+  ## `Rafael._registerInterval()`
+
+  TODO: Don't procrastinate, you tard.
+*/
+Rafael.prototype._registerInterval = function _registerInterval (framerate) {
+  var interval, msPerFrame
+
+  msPerFrame = 1000 / framerate
+
+  interval = this.intervals[framerate] = {
+    tasks: []
+  }
+
+  interval.timer = setInterval(this._runSlowTask.bind(this, interval), msPerFrame)
+}
+
+
+
+
+
+
+/*
+  ## `Rafael._runSlowTask()`
+
+  TODO: Don't procrastinate, you tard.
+*/
+Rafael.prototype._runSlowTask = function _runSlowTask (interval) {
+  var i, taskID, task, tasks
+
+  tasks = interval.tasks
+
+  for (i = 0; i < tasks.length; i++) {
+    taskID = tasks[i]
+    task = this.slowTasks[taskID]
+
+    this._taskCaller(task)
+
+    taskID = null
   }
 }
 
