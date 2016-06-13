@@ -166,6 +166,8 @@ Rafael.prototype.clear = function clear () {
   TODO: Describe
 */
 Rafael.prototype.pause = function pause (id) {
+  var i, interval, slowTasks
+
   if (this._debug) {
     console.log('Pausing', id || 'all tasks')
   }
@@ -179,8 +181,15 @@ Rafael.prototype.pause = function pause (id) {
       this.slowTasks[id].paused = true
       this._pauseSlowTask(id)
     }
+
   } else {
     this.paused = true
+
+    slowTasks = Object.keys(this.slowTasks)
+
+    for (i = 0; i < slowTasks.length; i++) {
+      this._pauseSlowTask(slowTasks[i])
+    }
   }
 }
 
