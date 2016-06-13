@@ -71,11 +71,9 @@ describe('Rafael', function () {
 
   describe('.clear()', function () {
     it('should clear all tasks', function () {
-      var framerate = Math.random()
-
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, { framerate: framerate })
+      rafael.schedule('baz', foo, { framerate: Math.random() })
       rafael.clear()
 
       expect(rafael.tasks).to.be.empty
@@ -90,11 +88,9 @@ describe('Rafael', function () {
 
   describe('.pause()', function () {
     it('should pause all tasks', function () {
-      var framerate = Math.random()
-
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo, { framerate: framerate })
+      rafael.schedule('baz', foo, { framerate: Math.random() })
       rafael.pause()
 
       expect(rafael.paused).to.be.true
@@ -103,13 +99,28 @@ describe('Rafael', function () {
     it('should pause a single task', function () {
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo)
+      rafael.schedule('baz', foo, { framerate: Math.random() })
+      rafael.schedule('bat', foo, { framerate: Math.random() })
       rafael.pause('foo')
 
       expect(rafael.tasks['foo'].paused).to.be.true
+      expect(rafael.tasks['bar'].paused).to.be.false
+      expect(rafael.slowTasks['baz'].paused).to.be.false
+      expect(rafael.slowTasks['bat'].paused).to.be.false
     })
 
-    xit('should pause a single slow task', function () {})
+    it('should pause a single slow task', function () {
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo, { framerate: Math.random() })
+      rafael.schedule('bat', foo, { framerate: Math.random() })
+      rafael.pause('baz')
+
+      expect(rafael.tasks['foo'].paused).to.be.false
+      expect(rafael.tasks['bar'].paused).to.be.false
+      expect(rafael.slowTasks['baz'].paused).to.be.true
+      expect(rafael.slowTasks['bat'].paused).to.be.false
+    })
   })
 
 
