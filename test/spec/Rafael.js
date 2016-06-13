@@ -87,12 +87,30 @@ describe('Rafael', function () {
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
       rafael.schedule('baz', foo)
+      rafael.schedule('bat', foo, { framerate: framerate })
       rafael.clear('foo')
 
-      expect(rafael.tasks['foo']).to.not.exist
+
+      expect(rafael.slowTasks['foo']).to.not.exist
+      expect(rafael.slowTasks['bar']).to.exist
+      expect(rafael.slowTasks['baz']).to.exist
+      expect(rafael.slowTasks['bat']).to.exist
     })
 
-    xit('should clear a single slow task', function () {})
+    it('should clear a single slow task', function () {
+      var framerate = Math.random()
+
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo, { framerate: framerate })
+      rafael.schedule('bat', foo, { framerate: framerate })
+      rafael.clear('baz')
+
+      expect(rafael.slowTasks['foo']).to.exist
+      expect(rafael.slowTasks['bar']).to.exist
+      expect(rafael.slowTasks['baz']).to.exist
+      expect(rafael.slowTasks['bat']).to.not.exist
+    })
   })
 
 
