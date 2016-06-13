@@ -71,12 +71,21 @@ describe('Rafael', function () {
 
   describe('.clear()', function () {
     it('should clear all tasks', function () {
+      var framerate = Math.random()
+
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo)
+      rafael.schedule('baz', foo, { framerate: framerate })
       rafael.clear()
+
       expect(rafael.tasks).to.be.empty
+      expect(rafael.slowTasks).to.be.empty
+      expect(rafael.intervals).to.be.empty
     })
+
+    xit('should clear a single task', function () {})
+
+    xit('should clear a single slow task', function () {})
   })
 
 
@@ -85,10 +94,13 @@ describe('Rafael', function () {
 
   describe('.pause()', function () {
     it('should pause all tasks', function () {
+      var framerate = Math.random()
+
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo)
+      rafael.schedule('baz', foo, { framerate: framerate })
       rafael.pause()
+
       expect(rafael.paused).to.be.true
     })
 
@@ -97,8 +109,11 @@ describe('Rafael', function () {
       rafael.schedule('bar', foo)
       rafael.schedule('baz', foo)
       rafael.pause('foo')
+
       expect(rafael.tasks['foo'].paused).to.be.true
     })
+
+    xit('should pause a single slow task', function () {})
   })
 
 
@@ -112,6 +127,7 @@ describe('Rafael', function () {
       rafael.schedule('baz', foo)
       rafael.pause()
       rafael.start()
+
       expect(rafael.paused).to.be.false
     })
 
@@ -121,8 +137,11 @@ describe('Rafael', function () {
       rafael.schedule('baz', foo)
       rafael.pause('foo')
       rafael.start('foo')
+
       expect(rafael.tasks['foo'].paused).to.be.false
     })
+
+    xit('should start a single slow task', function () {})
   })
 
 
@@ -221,7 +240,19 @@ describe('Rafael', function () {
     it('should unschedule a task', function () {
       rafael.schedule('foo', foo)
       rafael.unschedule('foo')
+
       expect(rafael.tasks).to.be.empty
+    })
+
+    xit('should unschedule a slow task', function () {
+      var framerate
+
+      framerate = Math.random()
+
+      rafael.schedule('foo', foo, { framerate: framerate })
+      rafael.unschedule('foo')
+
+      expect(rafael.slowTasks).to.be.empty
     })
   })
 })
