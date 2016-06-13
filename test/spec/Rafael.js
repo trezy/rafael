@@ -1,4 +1,10 @@
-var expect = chai.expect
+var _, expect
+
+
+
+
+
+expect = chai.expect
 
 
 
@@ -162,26 +168,76 @@ describe('Rafael', function () {
 
   describe('.start()', function () {
     it('should start all tasks', function () {
+      var framerate
+
+      framerate = Math.random()
+
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo)
+      rafael.schedule('baz', foo, {framerate: framerate})
+      rafael.schedule('bat', foo, {framerate: framerate})
       rafael.pause()
       rafael.start()
 
-      expect(rafael.paused).to.be.false
+      expect(rafael.tasks['foo'].paused).to.be.false
+      expect(rafael.tasks['bar'].paused).to.be.false
+      expect(rafael.slowTasks['baz'].paused).to.be.false
+      expect(rafael.slowTasks['bat'].paused).to.be.false
+      expect(rafael.intervals[framerate]).to.exist
     })
 
     it('should start a single task', function () {
       rafael.schedule('foo', foo)
       rafael.schedule('bar', foo)
-      rafael.schedule('baz', foo)
+      rafael.schedule('baz', foo, {framerate: Math.random()})
+      rafael.schedule('bat', foo, {framerate: Math.random()})
       rafael.pause('foo')
       rafael.start('foo')
 
       expect(rafael.tasks['foo'].paused).to.be.false
+      expect(rafael.tasks['bar'].paused).to.be.false
+      expect(rafael.slowTasks['baz'].paused).to.be.false
+      expect(rafael.slowTasks['bat'].paused).to.be.false
     })
 
-    xit('should start a single slow task', function () {})
+    it('should start a single slow task', function () {
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo, {framerate: Math.random()})
+      rafael.schedule('bat', foo, {framerate: Math.random()})
+      rafael.pause('baz')
+      rafael.start('baz')
+
+      expect(rafael.tasks['foo'].paused).to.be.false
+      expect(rafael.tasks['bar'].paused).to.be.false
+      expect(rafael.slowTasks['baz'].paused).to.be.false
+      expect(rafael.slowTasks['bat'].paused).to.be.false
+    })
+
+    it('shouldn\'t fail when trying to start a task that\'s already started', function () {
+      var duplicates, framerate, tasks
+
+      framerate = Math.random()
+
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo, {framerate: framerate})
+      rafael.schedule('bat', foo, {framerate: framerate})
+      rafael.start('baz')
+
+      tasks = rafael.intervals[framerate].tasks
+      duplicates = 0
+
+      tasks.forEach(function (taskToMatch, index) {
+        tasks.splice(index, 1)
+
+        if (tasks.indexOf(taskToMatch) !== -1) {
+          duplicates++
+        }
+      })
+
+      expect(duplicates).to.equal(0)
+    })
   })
 
 
@@ -284,12 +340,8 @@ describe('Rafael', function () {
       expect(rafael.tasks).to.be.empty
     })
 
-    xit('should unschedule a slow task', function () {
-      var framerate
-
-      framerate = Math.random()
-
-      rafael.schedule('foo', foo, { framerate: framerate })
+    it('should unschedule a slow task', function () {
+      rafael.schedule('foo', foo, { framerate: Math.random() })
       rafael.unschedule('foo')
 
       expect(rafael.slowTasks).to.be.empty
