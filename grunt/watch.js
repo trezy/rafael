@@ -24,7 +24,6 @@ module.exports = {
 
   test: {
     files: [
-      'dist/Rafael.js',
       'test/**/*.js'
     ],
     tasks: [
