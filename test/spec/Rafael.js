@@ -121,6 +121,39 @@ describe('Rafael', function () {
       expect(rafael.slowTasks['baz'].paused).to.be.true
       expect(rafael.slowTasks['bat'].paused).to.be.false
     })
+
+    it('should delete the interval if all relevant slow tasks are paused', function () {
+      var framerate
+
+      framerate = Math.random()
+
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo, { framerate: framerate })
+      rafael.schedule('bat', foo, { framerate: framerate })
+      rafael.pause('baz')
+      rafael.pause('bat')
+
+      expect(rafael.tasks['foo'].paused).to.be.false
+      expect(rafael.tasks['bar'].paused).to.be.false
+      expect(rafael.slowTasks['baz'].paused).to.be.true
+      expect(rafael.slowTasks['bat'].paused).to.be.true
+      expect(rafael.intervals[framerate]).to.not.exist
+    })
+
+    it('shouldn\'t fail when trying to pause a task that\'s already paused', function () {
+      rafael.schedule('foo', foo)
+      rafael.schedule('bar', foo)
+      rafael.schedule('baz', foo, { framerate: Math.random() })
+      rafael.schedule('bat', foo, { framerate: Math.random() })
+      rafael.pause('baz')
+      rafael.pause('baz')
+
+      expect(rafael.tasks['foo'].paused).to.be.false
+      expect(rafael.tasks['bar'].paused).to.be.false
+      expect(rafael.slowTasks['baz'].paused).to.be.true
+      expect(rafael.slowTasks['bat'].paused).to.be.false
+    })
   })
 
 
