@@ -138,10 +138,10 @@ Rafael.prototype.pause = function pause (id) {
     console.log('Pausing', id || 'all tasks')
   }
 
-  if (id) {
-    this.tasks[id].paused = true
-  } else {
+  if (!id) {
     this.paused = true
+  } else if (this.tasks[id]) {
+    this.tasks[id].paused = true
   }
 }
 
