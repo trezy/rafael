@@ -99,6 +99,12 @@ describe('Rafael', function () {
       rafael.pause('foo')
       expect(rafael.tasks['foo'].paused).to.be.true
     })
+
+    it('should not throw an error when pausing a task that does not exist', function () {
+      expect(function () {
+        rafael.pause('foo')
+      }).to.not.throw(Error)
+    })
   })
 
 
