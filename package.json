@@ -16,7 +16,7 @@
   "license": "MIT",
   "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "scripts": {
-    "build": "babel Rafael.js --out-dir dist",
+    "build": "babel src --out-dir dist",
     "commit": "git-cz",
     "deploy": "node ./deploy.js"
   },
