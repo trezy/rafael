@@ -34,7 +34,8 @@
     "jsdom": "^13.2.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^5.2.0",
-    "shelljs": "^0.7.0"
+    "shelljs": "^0.7.0",
+    "sinon": "^7.2.3"
   },
   "config": {
     "commitizen": {
