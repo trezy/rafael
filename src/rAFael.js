@@ -1,16 +1,16 @@
 /*
-  # Rafael
+  # rAFael
 
   */
- class Rafael {
+ class rAFael {
   /*
-    The `Rafael.paused` flag determines if this entire Rafael instance should be paused.
+    The `rAFael.paused` flag determines if this entire rAFael instance should be paused.
   */
   this.paused = false
 
   /*
-    `Rafael.tasks` maintains a record of all currently running tasks
-    associated with this instance of Rafael.
+    `rAFael.tasks` maintains a record of all currently running tasks
+    associated with this instance of rAFael.
   */
   this.tasks = {}
 
@@ -19,9 +19,9 @@
 
 
   /*
-    ## `new Rafael`
+    ## `new rAFael`
 
-    Creating a new `Rafael` instance will kick off its loop and start to
+    Creating a new `rAFael` instance will kick off its loop and start to
     running tasks.
   */
   constructor () {
@@ -33,7 +33,7 @@
 
 
   /*
-    ## `Rafael.schedule(taskId, task, options)`
+    ## `rAFael.schedule(taskId, task, options)`
 
     Schedule a task to be run in our loop. It takes up to three arguments:
     `taskId`, `task`, and `options`.
@@ -42,7 +42,7 @@
     later on. If an ID isn't set then it will be the index of the new task in
     `this.tasks`.
 
-    * `task` (required) is the function to be run on this `Rafael`.
+    * `task` (required) is the function to be run on this `rAFael`.
 
     * `options` (optional) is a hash of options thingies?
 
@@ -99,9 +99,9 @@
 
 
   /*
-    ## `Rafael.unschedule(id)`
+    ## `rAFael.unschedule(id)`
 
-    Remove a task from our loop. `id` is ID of the task to be removed from this `Rafael`.
+    Remove a task from our loop. `id` is ID of the task to be removed from this `rAFael`.
   */
   unschedule = function schedule (id) {
     if (this._debug) {
@@ -117,9 +117,9 @@
 
 
   /*
-    ## `Rafael.clear()`
+    ## `rAFael.clear()`
 
-    Remove all tasks from the `Rafael`. We just overwrite the original array
+    Remove all tasks from the `rAFael`. We just overwrite the original array
     since this is a destructive operation.
   */
   clear () {
@@ -135,7 +135,7 @@
 
 
   /*
-    ## `Rafael.pause(id)`
+    ## `rAFael.pause(id)`
 
     TODO: Describe
   */
@@ -156,7 +156,7 @@
 
 
   /*
-    ## `Rafael.start(id)`
+    ## `rAFael.start(id)`
 
     TODO: Describe
   */
@@ -177,9 +177,9 @@
 
 
   /*
-    ## `Rafael._taskCaller(taskObject)`
+    ## `rAFael._taskCaller(taskObject)`
 
-    Start the loop `requestAnimationFrame` loop for this `Rafael`.
+    Start the loop `requestAnimationFrame` loop for this `rAFael`.
   */
   _taskCaller (taskObject) {
     taskObject.task.call(taskObject.context)
@@ -190,9 +190,9 @@
 
 
   /*
-    ## `Rafael._startLoop()`
+    ## `rAFael._startLoop()`
 
-    Start the loop `requestAnimationFrame` loop for this `Rafael`.
+    Start the loop `requestAnimationFrame` loop for this `rAFael`.
   */
   _startLoop = () => {
     const schedule = this
@@ -217,7 +217,7 @@
 
 
   /*
-    ## `Rafael._shouldRun()`
+    ## `rAFael._shouldRun()`
 
     Compares the passed in framerate against the current frame to determine if the
     task should run on this frame
@@ -231,5 +231,5 @@
 
 
 
-export default Rafael
-export { Rafael }
+export default rAFael
+export { rAFael }

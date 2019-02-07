@@ -1,6 +1,6 @@
 {
   "name": "rafael",
-  "main": "./dist/Rafael.min.js",
+  "main": "./dist/rAFael.min.js",
   "version": "4.3.0",
   "authors": [
     "Trezy <tre@trezy.com>"
@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/trezy/rafael#readme",
   "license": "MIT",
-  "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
+  "description": "rAFael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "scripts": {
     "build": "babel src --out-dir dist",
     "commit": "git-cz",

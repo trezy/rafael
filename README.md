@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Rafael" src="https://github.com/trezy/rafael-logo/raw/master/rafael.png" width="500">
+  <img alt="rAFael" src="https://github.com/trezy/rafael-logo/raw/master/rafael.png" width="500">
 </p>
 
 <p align="center">
@@ -11,18 +11,18 @@
   <a href="https://travis-ci.org/trezy/rafael"><img alt="Travis CI Build" src="https://img.shields.io/travis/trezy/rafael.svg?style=flat-square"></a>
 </p>
 
-Rafael.js is a simple client side rafael based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop. Typically you may use something like [`window.setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setInterval) or [`window.setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout) to achieve this.
+rAFael.js is a simple client side rafael based on the [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame) loop. Typically you may use something like [`window.setInterval()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setInterval) or [`window.setTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/WindowTimers/setTimeout) to achieve this.
 
-However, `requestAnimationFrame` allows us to utilize the GPU, avoiding the performance bottlenecks of those other methods. `requestAnimationFrame` is intended to allow Javascript animations to utilize the computer's GPU so it can be handled at ~60fps (performance depends on the machine). Rafael just makes it easy to control multiple tasks running on the `requestAnimationFrame` loop.
+However, `requestAnimationFrame` allows us to utilize the GPU, avoiding the performance bottlenecks of those other methods. `requestAnimationFrame` is intended to allow Javascript animations to utilize the computer's GPU so it can be handled at ~60fps (performance depends on the machine). rAFael just makes it easy to control multiple tasks running on the `requestAnimationFrame` loop.
 
 **NOTE:** This plugin will make it really, *really*, ***really*** easy to bog down your app. Schedule with caution.
 
 ## Usage
 
-Create a new instance of Rafael:
+Create a new instance of rAFael:
 
 ```javascript
-var rafael = new Rafael;
+var rafael = new rAFael;
 ```
 
 Now let's schedule something:
@@ -64,21 +64,21 @@ setTimeout(function () {
 }, 1000)
 ```
 
-`Rafael` will be happy to run as many tasks as you want to give it.
+`rAFael` will be happy to run as many tasks as you want to give it.
 
 ## API
 
-### `new Rafael`
+### `new rAFael`
 
-Creates and returns a new instance of `Rafael`.
+Creates and returns a new instance of `rAFael`.
 
-### `Rafael.schedule(taskId, task[, options])`
+### `rAFael.schedule(taskId, task[, options])`
 
 The `schedule()` method adds a task to the schedule, causing it to run on every iteration of the schedule loop. *Returns* the task's ID.
 
 | Parameter | Required/Optional | Description |
 |---|---|---|
-| `taskId` | optional | A string used to manipulate the task within the context of the `Rafael`. If an ID is not passed then the task's ID will be it's index in `Rafael.tasks`. |
+| `taskId` | optional | A string used to manipulate the task within the context of the `rAFael`. If an ID is not passed then the task's ID will be it's index in `rAFael.tasks`. |
 | `task` | required | The function to be run. |
 | `options` | optional | This is a hash of options to be considered for the task. |
 
@@ -88,17 +88,17 @@ The `schedule()` method adds a task to the schedule, causing it to run on every 
 |---|---|---|---|
 | `context` | Object | `window` | The value of `this` within the task |
 | `framerate` | Number | `60` | The number of times the task should run per second. Max is 60. |
-| `paused` | Boolean | `false` | Whether or not the task should start immediately. Tasks that receive `paused` can be kicked off with `Rafael.start`. |
+| `paused` | Boolean | `false` | Whether or not the task should start immediately. Tasks that receive `paused` can be kicked off with `rAFael.start`. |
 
-### `Rafael.unschedule(taskId)`
+### `rAFael.unschedule(taskId)`
 
 The `unschedule()` method removes a task from the schedule and stops it from running. *Returns* a success boolean.
 
 | Parameter | Required/Optional | Description |
 |---|---|---|
-| `taskId` | required | The task to be removed from the schedule. This will completely remove the task from the `Rafael` so it cannot be restarted. |
+| `taskId` | required | The task to be removed from the schedule. This will completely remove the task from the `rAFael` so it cannot be restarted. |
 
-### `Rafael.pause([taskId])`
+### `rAFael.pause([taskId])`
 
 The `pause()` method pauses a task without removing it from the schedule. The task can later be restarted with `start()`.
 
@@ -106,7 +106,7 @@ The `pause()` method pauses a task without removing it from the schedule. The ta
 |---|---|---|
 | `taskId` | optional | The task to be paused. If no `taskId` is passed, the entire rafael will be paused. |
 
-### `Rafael.start([taskId])`
+### `rAFael.start([taskId])`
 
 The `start()` method restarts a paused task.
 
@@ -114,6 +114,6 @@ The `start()` method restarts a paused task.
 |---|---|---|
 | `taskId` | optional | The task to be started. If no `taskId` is passed, the entire rafael will be started. |
 
-### `Rafael.clear()`
+### `rAFael.clear()`
 
 Removes all tasks from the rafael.

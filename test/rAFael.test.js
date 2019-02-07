@@ -7,7 +7,7 @@ const sinon = require('sinon')
 
 
 // Local imports
-const Rafael = require('../dist/Rafael')
+const rAFael = require('../dist/rAFael')
 
 
 
@@ -21,8 +21,8 @@ describe('Sanity Check', function () {
       pretendToBeVisual: true,
     })
 
-    // Create the Rafael instance to be used throughout the tests
-    this.rafael = new Rafael
+    // Create the rAFael instance to be used throughout the tests
+    this.rafael = new rAFael
   })
 
 
@@ -54,9 +54,9 @@ describe('Sanity Check', function () {
 
 
 
-describe('Rafael', function () {
+describe('rAFael', function () {
   before(function () {
-    this.rafael = new Rafael
+    this.rafael = new rAFael
   })
 
   afterEach(function () {
