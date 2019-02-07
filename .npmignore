@@ -7,5 +7,4 @@ Gruntfile.js
 bower.json
 deploy.js
 doc
-grunt
 test
