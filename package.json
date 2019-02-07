@@ -16,13 +16,17 @@
   "license": "MIT",
   "description": "Rafael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "scripts": {
+    "build": "babel Rafael.js --out-dir dist",
     "commit": "git-cz",
     "deploy": "node ./deploy.js"
   },
   "devDependencies": {
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-es2015-modules-umd": "^6.8.0",
-    "babel-preset-es2015": "^6.9.0",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-transform-modules-umd": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/register": "^7.0.0",
     "chai": "^3.5.0",
     "commitizen": "^3.0.5",
     "cz-emoji": "1.1.2",
