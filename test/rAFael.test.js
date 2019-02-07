@@ -1,4 +1,12 @@
-var expect = chai.expect
+// Module imports
+const { expect } = require('chai')
+
+
+
+
+
+// Local imports
+const Rafael = require('../dist/Rafael')
 
 
 
@@ -7,11 +15,14 @@ var expect = chai.expect
 describe('Sanity Check', function () {
   var rafael
 
-
-
-
-
   before(function () {
+    // Run `jsdom` to get a fake `window`
+    require('jsdom-global')('', {
+      // This options ensures that the `window` object has `requestAnimationFrame`
+      pretendToBeVisual: true,
+    })
+
+    // Create the Rafael instance to be used throughout the tests
     rafael = new Rafael
   })
 

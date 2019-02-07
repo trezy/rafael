@@ -194,7 +194,7 @@ Rafael.prototype._startLoop = function _startLoop () {
   schedule = this
   tasks = Object.keys(this.tasks)
 
-  requestAnimationFrame(schedule._startLoop)
+  window.requestAnimationFrame(schedule._startLoop)
 
   if (!this.paused) {
     for (i = 0; i < tasks.length; i++) {

@@ -18,7 +18,8 @@
   "scripts": {
     "build": "babel src --out-dir dist",
     "commit": "git-cz",
-    "deploy": "node ./deploy.js"
+    "deploy": "node ./deploy.js",
+    "test": "mocha"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -27,10 +28,12 @@
     "@babel/plugin-transform-modules-commonjs": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
-    "chai": "^3.5.0",
+    "chai": "^4.2.0",
     "commitizen": "^3.0.5",
     "cz-emoji": "1.1.2",
-    "mocha": "^2.5.3",
+    "jsdom": "^13.2.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^5.2.0",
     "shelljs": "^0.7.0"
   },
   "config": {
