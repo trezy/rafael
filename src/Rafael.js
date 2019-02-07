@@ -196,12 +196,9 @@
   */
   _startLoop = () => {
     const schedule = this
-    const tasks = Object.keys(this.tasks)
-
-    window.requestAnimationFrame(schedule._startLoop)
 
     if (!this.paused) {
-      for (let i = 0; i < tasks.length; i++) {
+      for (const [taskName, task] of Object.entries(this.tasks)) {
         const task = this.tasks[tasks[i]]
 
         if ((task['framerate'] === 60 || this._shouldRun(task['framerate'])) && !task.paused) {
@@ -211,6 +208,8 @@
 
       this._frame++
     }
+
+    window.requestAnimationFrame(schedule._startLoop)
   }
 
 
