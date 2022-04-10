@@ -15,6 +15,7 @@
   "homepage": "https://github.com/trezy/rafael#readme",
   "license": "MIT",
   "description": "rAFael.js is a simple scheduling library based on the requestAnimationFrame loop.",
+  "type": "module",
   "scripts": {
     "build": "babel src --out-dir dist",
     "commit": "git-cz",
@@ -41,5 +42,6 @@
     "commitizen": {
       "path": "./node_modules/cz-emoji"
     }
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }
