@@ -20,7 +20,7 @@
     "build": "babel src --out-dir dist",
     "commit": "git-cz",
     "deploy": "node ./deploy.js",
-    "test": "mocha"
+    "lint": "eslint ./src/**/*.js ./test/**/*.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
@@ -32,7 +32,16 @@
     "chai": "^4.3.6",
     "commitizen": "^3.1.2",
     "cz-emoji": "1.3.1",
-    "jsdom": "^13.2.0",
+    "eslint": "^8.11.0",
+    "eslint-plugin-editorconfig": "^3.2.0",
+    "eslint-plugin-jsdoc": "^38.0.6",
+    "eslint-plugin-mocha": "^10.0.3",
+    "eslint-plugin-optimize-regex": "^1.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-sort-class-members": "^1.14.1",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "jsdoc": "^3.6.10",
     "jsdom-global": "^3.0.2",
     "mocha": "^5.2.0",
     "shelljs": "^0.8.5",
