@@ -8,7 +8,7 @@ import sinon from 'sinon'
 
 
 // Local imports
-import { Rafael } from '../src/index.js'
+import * as Rafael from '../lib/index.js'
 
 
 
@@ -24,106 +24,85 @@ describe('Rafael', function() {
 
 		// @ts-ignore
 		globalThis.window = window
-
-		this.rafael = new Rafael
 	})
 
 	after(function() {
 		globalThis.window.close()
 	})
 
-	beforeEach(function() {
-		this.rafael = new Rafael
-	})
-
 	afterEach(function() {
-		this.rafael.clear()
-		delete this.rafael
+		Rafael.clear()
 	})
 
 	describe('.clear()', function() {
 		it('exists', function() {
-			expect(this.rafael.clear).to.be.a('function')
+			expect(Rafael.clear).to.be.a('function')
 		})
 
 		it('should clear all tasks', function() {
-			this.rafael.schedule(sinon.fake(), { id: 'foo' })
-			this.rafael.schedule(sinon.fake(), { id: 'bar' })
-			this.rafael.schedule(sinon.fake(), { id: 'baz' })
-			this.rafael.clear()
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'bar' })
+			Rafael.schedule(sinon.fake(), { id: 'baz' })
 
 			// eslint-disable-next-line no-unused-expressions
-			expect(this.rafael.tasks).to.be.an('object').that.is.empty
+			expect(Rafael.state.tasks).to.be.an('object')
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Object.keys(Rafael.state.tasks)).to.have.lengthOf(3)
+
+			Rafael.clear()
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.tasks).to.be.an('object').that.is.empty
 		})
 	})
 
 	describe('.pause()', function() {
 		it('exists`', function() {
-			expect(this.rafael.pause).to.be.a('function')
+			expect(Rafael.pause).to.be.a('function')
 		})
 
 		it('should pause all tasks', function() {
-			this.rafael.schedule(sinon.fake(), { id: 'foo' })
-			this.rafael.schedule(sinon.fake(), { id: 'bar' })
-			this.rafael.schedule(sinon.fake(), { id: 'baz' })
-			this.rafael.pause()
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'bar' })
+			Rafael.schedule(sinon.fake(), { id: 'baz' })
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.isPaused).to.be.false
+
+			Rafael.pause()
 
 			// eslint-disable-next-line no-unused-expressions
-			expect(this.rafael.isPaused).to.be.true
+			expect(Rafael.state.isPaused).to.be.true
 		})
 
 		it('should pause a single task', function() {
-			this.rafael.schedule(sinon.fake(), { id: 'foo' })
-			this.rafael.schedule(sinon.fake(), { id: 'bar' })
-			this.rafael.schedule(sinon.fake(), { id: 'baz' })
-			this.rafael.pause('foo')
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'bar' })
+			Rafael.schedule(sinon.fake(), { id: 'baz' })
 
 			// eslint-disable-next-line no-unused-expressions
-			expect(this.rafael.tasks['foo'].isPaused).to.be.true
+			expect(Rafael.state.tasks['foo'].isPaused).to.be.false
+
+			Rafael.pause('foo')
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.tasks['foo'].isPaused).to.be.true
 		})
 
 		it('should not throw an error when pausing a task that does not exist', function() {
-			expect(() => this.rafael.pause('foo')).to.not.throw(Error)
-		})
-	})
-
-	describe('.start()', function() {
-		it('exists', function() {
-			expect(this.rafael.start).to.be.a('function')
-		})
-
-		it('should start all tasks', function() {
-			this.rafael.schedule(sinon.fake(), { id: 'foo' })
-			this.rafael.schedule(sinon.fake(), { id: 'bar' })
-			this.rafael.schedule(sinon.fake(), { id: 'baz' })
-			this.rafael.pause()
-			this.rafael.start()
-
-			// eslint-disable-next-line no-unused-expressions
-			expect(this.rafael.isPaused).to.be.false
-		})
-
-		it('should start a single task', function() {
-			this.rafael.schedule(sinon.fake(), { id: 'foo' })
-			this.rafael.schedule(sinon.fake(), { id: 'bar' })
-			this.rafael.schedule(sinon.fake(), { id: 'baz' })
-			this.rafael.pause('foo')
-			this.rafael.start('foo')
-
-			// eslint-disable-next-line no-unused-expressions
-			expect(this.rafael.tasks['foo'].isPaused).to.be.false
+			expect(() => Rafael.pause('foo')).to.not.throw(Error)
 		})
 	})
 
 	describe('.schedule()', function() {
 		it('exists', function() {
-			expect(this.rafael.schedule).to.be.a('function')
+			expect(Rafael.schedule).to.be.a('function')
 		})
 
 		it('should schedule a task', function(done) {
 			let isDone = false
 
-			this.rafael.schedule(() => {
+			Rafael.schedule(() => {
 				if (!isDone) {
 					isDone = true
 					done()
@@ -132,30 +111,30 @@ describe('Rafael', function() {
 		})
 
 		it('should schedule a task even without an ID', function() {
-			const expectedID = String(Object.keys(this.rafael.tasks).length)
+			const expectedID = String(Object.keys(Rafael.state.tasks).length)
 
-			expect(this.rafael.schedule(sinon.fake())).to.be.equal(expectedID)
+			expect(Rafael.schedule(sinon.fake())).to.be.equal(expectedID)
 		})
 
 		it('should error on duplicate IDs', function() {
-			this.rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
 
-			expect(() => this.rafael.schedule(sinon.fake(), { id: 'foo' })).to.throw(RangeError)
+			expect(() => Rafael.schedule(sinon.fake(), { id: 'foo' })).to.throw(RangeError)
 		})
 
 		it('should schedule multiple tasks', function() {
-			this.rafael.schedule(sinon.fake(), { id: 'foo' })
-			this.rafael.schedule(sinon.fake(), { id: 'bar' })
-			this.rafael.schedule(sinon.fake(), { id: 'baz' })
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'bar' })
+			Rafael.schedule(sinon.fake(), { id: 'baz' })
 
-			expect(Object.keys(this.rafael.tasks).length).to.equal(3)
+			expect(Object.keys(Rafael.state.tasks)).to.have.lengthOf(3)
 		})
 
-		it('should schedule a task with a framerate', function(done) {
+		it('should schedule a task with a framerate between 1 and 60', function(done) {
 			const framerate = 30
 			let count = 0
 
-			this.rafael.schedule(function() {
+			Rafael.schedule(function() {
 				count += 1
 			}, {
 				framerate,
@@ -163,7 +142,7 @@ describe('Rafael', function() {
 			})
 
 			setTimeout(() => {
-				this.rafael.unschedule('foo')
+				Rafael.unschedule('foo')
 				expect(count).to.be.closeTo(framerate, 5)
 				done()
 			}, 1000)
@@ -175,7 +154,7 @@ describe('Rafael', function() {
 			const framerate = 0.5
 			let count = 0
 
-			this.rafael.schedule(function() {
+			Rafael.schedule(function() {
 				count += 1
 			}, {
 				framerate,
@@ -183,17 +162,17 @@ describe('Rafael', function() {
 			})
 
 			setTimeout(() => {
-				this.rafael.unschedule('foo')
+				Rafael.unschedule('foo')
 				expect(count).to.equal(2)
 				done()
-			}, 4500)
+			}, 4000)
 		})
 
 		it('should error on framerates higher than 60', function() {
-			const framerate = Math.random() + 60
+			const framerate = 61
 
 			expect(() => {
-				this.rafael.schedule(sinon.fake(), {
+				Rafael.schedule(sinon.fake(), {
 					framerate,
 					id: 'foo',
 				})
@@ -210,7 +189,7 @@ describe('Rafael', function() {
 				done()
 			}
 
-			this.rafael.schedule(function() {
+			Rafael.schedule(function() {
 				if (!isDone) {
 					isDone = true
 					this.secret = 'bar'
@@ -223,17 +202,113 @@ describe('Rafael', function() {
 		})
 	})
 
+	describe('.start()', function() {
+		it('exists', function() {
+			expect(Rafael.start).to.be.a('function')
+		})
+
+		it('should start all tasks', function() {
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'bar' })
+			Rafael.schedule(sinon.fake(), { id: 'baz' })
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.isPaused).to.be.false
+
+			Rafael.pause()
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.isPaused).to.be.true
+
+			Rafael.start()
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.isPaused).to.be.false
+		})
+
+		it('should start a single task', function() {
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'bar' })
+			Rafael.schedule(sinon.fake(), { id: 'baz' })
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.tasks['foo'].isPaused).to.be.false
+
+			Rafael.pause('foo')
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.tasks['foo'].isPaused).to.be.true
+
+			Rafael.start('foo')
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.tasks['foo'].isPaused).to.be.false
+		})
+	})
+
+	describe('.stop()', function() {
+		it('exists', function() {
+			expect(Rafael.stop).to.be.a('function')
+		})
+
+		it('should stop all tasks', function() {
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'bar' })
+			Rafael.schedule(sinon.fake(), { id: 'baz' })
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.tasks).to.be.an('object')
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Object.keys(Rafael.state.tasks)).to.have.lengthOf(3)
+
+			Rafael.stop()
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.frame).to.equal(0)
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.isPaused).to.be.false
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.loopID).to.be.null
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.tasks).to.be.an('object').that.is.empty
+		})
+	})
+
 	describe('.unschedule()', function() {
 		it('exists', function() {
-			expect(this.rafael.unschedule).to.be.a('function')
+			expect(Rafael.unschedule).to.be.a('function')
 		})
 
 		it('should unschedule a task', function() {
-			this.rafael.schedule(sinon.fake(), { id: 'foo' })
-			this.rafael.unschedule('foo')
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
 
 			// eslint-disable-next-line no-unused-expressions
-			expect(this.rafael.tasks).to.be.an('object').that.is.empty
+			expect(Object.keys(Rafael.state.tasks)).to.have.lengthOf(1)
+
+			Rafael.unschedule('foo')
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.tasks).to.be.an('object').that.is.empty
+		})
+
+		it('should stop the task runner if there are no tasks left', function() {
+			Rafael.schedule(sinon.fake(), { id: 'foo' })
+			Rafael.schedule(sinon.fake(), { id: 'bar' })
+			Rafael.schedule(sinon.fake(), { id: 'baz' })
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.loopID).to.not.be.null
+
+			Rafael.unschedule('foo')
+			Rafael.unschedule('bar')
+			Rafael.unschedule('baz')
+
+			// eslint-disable-next-line no-unused-expressions
+			expect(Rafael.state.loopID).to.be.null
 		})
 	})
 })

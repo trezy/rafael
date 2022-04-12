@@ -1,6 +1,6 @@
 {
   "name": "rafael",
-  "main": "./dist/rAFael.min.js",
+  "main": "./lib/index.js",
   "version": "4.3.0",
   "authors": [
     "Trezy <tre@trezy.com>"
