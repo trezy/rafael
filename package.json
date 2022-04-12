@@ -16,11 +16,12 @@
   "license": "MIT",
   "description": "rAFael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "type": "module",
+  "types": "types/types.d.ts",
   "scripts": {
-    "build": "babel src --out-dir dist",
     "commit": "git-cz",
     "deploy": "node ./deploy.js",
-    "lint": "eslint ./src/**/*.js ./test/**/*.js",
+    "lint": "eslint ./lib/**/*.js ./test/**/*.js",
+    "prepublish": "jsdoc -t node_modules/tsd-jsdoc/dist -r lib/**/*.js -d types",
     "test": "NODE_ENV=test nyc mocha --experimental-loader=@istanbuljs/esm-loader-hook --check-leaks --global window"
   },
   "devDependencies": {
@@ -50,7 +51,8 @@
     "mocha": "^9.2.2",
     "nyc": "^15.1.0",
     "shelljs": "^0.8.5",
-    "sinon": "^13.0.1"
+    "sinon": "^13.0.1",
+    "tsd-jsdoc": "^2.5.0"
   },
   "config": {
     "commitizen": {
