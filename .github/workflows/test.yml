@@ -1,0 +1,46 @@
+name: Test
+
+on: ['push']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Locate Yarn Cache Directory
+        id: locate-yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Retrieve Yarn Cache
+        id: retrieve-yarn-cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.locate-yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Test
+        run: yarn test
+
+      - name: Send coverage to Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
+
+      - name: Send coverage to Code Climate
+        uses: paambaati/codeclimate-action@v3.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: ${{ github.workspace }}/coverage/lcov.info:lcov
