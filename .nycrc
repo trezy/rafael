@@ -1,0 +1,6 @@
+{
+  "all": true,
+  "exclude": [],
+  "include": ["lib/**/*.js"],
+  "reporter": ["lcovonly", "text"]
+}
