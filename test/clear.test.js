@@ -27,10 +27,14 @@ describe('clear', function() {
 		})
 
 		// @ts-ignore
+		this.clock = sinon.useFakeTimers({ global: window })
+
+		// @ts-ignore
 		globalThis.window = window
 	})
 
 	after(function() {
+		this.clock.restore()
 		globalThis.window.close()
 	})
 
@@ -42,20 +46,17 @@ describe('clear', function() {
 		expect(clear).to.be.a('function')
 	})
 
-	it('should clear all tasks', function() {
+	it('clears all tasks', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 		schedule(sinon.fake(), { id: 'bar' })
-		schedule(sinon.fake(), { id: 'baz' })
 
-		// eslint-disable-next-line no-unused-expressions
 		expect(state.tasks).to.be.an('object')
-
-		// eslint-disable-next-line no-unused-expressions
-		expect(Object.keys(state.tasks)).to.have.lengthOf(3)
+			.with.keys('foo', 'bar')
 
 		clear()
 
 		// eslint-disable-next-line no-unused-expressions
-		expect(state.tasks).to.be.an('object').that.is.empty
+		expect(state.tasks).to.be.an('object')
+			.that.is.empty
 	})
 })
