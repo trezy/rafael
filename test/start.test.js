@@ -45,33 +45,45 @@ describe('start', function() {
 	})
 
 	it('should start all tasks', function() {
-		schedule(sinon.fake(), { id: 'foo' })
-		schedule(sinon.fake(), { id: 'bar' })
-		schedule(sinon.fake(), { id: 'baz' })
+		schedule(sinon.fake(), {
+			id: 'foo',
+			isPaused: true,
+		})
+		schedule(sinon.fake(), {
+			id: 'bar',
+			isPaused: true,
+		})
+		schedule(sinon.fake(), {
+			id: 'baz',
+			isPaused: true,
+		})
 
-		// eslint-disable-next-line no-unused-expressions
-		expect(state.isPaused).to.be.false
-
-		pause()
-
-		// eslint-disable-next-line no-unused-expressions
-		expect(state.isPaused).to.be.true
+		Object.values(state.tasks).forEach(task => {
+			// eslint-disable-next-line no-unused-expressions
+			expect(task.isPaused).to.be.true
+		})
 
 		start()
 
-		// eslint-disable-next-line no-unused-expressions
-		expect(state.isPaused).to.be.false
+		Object.values(state.tasks).forEach(task => {
+			// eslint-disable-next-line no-unused-expressions
+			expect(task.isPaused).to.be.false
+		})
 	})
 
 	it('should start a single task', function() {
-		schedule(sinon.fake(), { id: 'foo' })
-		schedule(sinon.fake(), { id: 'bar' })
-		schedule(sinon.fake(), { id: 'baz' })
-
-		// eslint-disable-next-line no-unused-expressions
-		expect(state.tasks['foo'].isPaused).to.be.false
-
-		pause('foo')
+		schedule(sinon.fake(), {
+			id: 'foo',
+			isPaused: true,
+		})
+		schedule(sinon.fake(), {
+			id: 'bar',
+			isPaused: true,
+		})
+		schedule(sinon.fake(), {
+			id: 'baz',
+			isPaused: true,
+		})
 
 		// eslint-disable-next-line no-unused-expressions
 		expect(state.tasks['foo'].isPaused).to.be.true

@@ -48,13 +48,17 @@ describe('pause', function() {
 		schedule(sinon.fake(), { id: 'bar' })
 		schedule(sinon.fake(), { id: 'baz' })
 
-		// eslint-disable-next-line no-unused-expressions
-		expect(state.isPaused).to.be.false
+		Object.values(state.tasks).forEach(task => {
+			// eslint-disable-next-line no-unused-expressions
+			expect(task.isPaused).to.be.false
+		})
 
 		pause()
 
-		// eslint-disable-next-line no-unused-expressions
-		expect(state.isPaused).to.be.true
+		Object.values(state.tasks).forEach(task => {
+			// eslint-disable-next-line no-unused-expressions
+			expect(task.isPaused).to.be.true
+		})
 	})
 
 	it('should pause a single task', function() {
