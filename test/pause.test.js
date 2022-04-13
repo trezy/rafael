@@ -43,7 +43,7 @@ describe('pause', function() {
 		clear()
 	})
 
-	it('exists`', function() {
+	it('exists', function() {
 		expect(pause).to.be.a('function')
 	})
 
