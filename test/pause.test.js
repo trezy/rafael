@@ -28,10 +28,14 @@ describe('pause', function() {
 		})
 
 		// @ts-ignore
+		this.clock = sinon.useFakeTimers({ global: window })
+
+		// @ts-ignore
 		globalThis.window = window
 	})
 
 	after(function() {
+		this.clock.restore()
 		globalThis.window.close()
 	})
 
@@ -46,7 +50,6 @@ describe('pause', function() {
 	it('should pause all tasks', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 		schedule(sinon.fake(), { id: 'bar' })
-		schedule(sinon.fake(), { id: 'baz' })
 
 		Object.values(state.tasks).forEach(task => {
 			// eslint-disable-next-line no-unused-expressions
@@ -64,7 +67,6 @@ describe('pause', function() {
 	it('should pause a single task', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 		schedule(sinon.fake(), { id: 'bar' })
-		schedule(sinon.fake(), { id: 'baz' })
 
 		// eslint-disable-next-line no-unused-expressions
 		expect(state.tasks['foo'].isPaused).to.be.false
