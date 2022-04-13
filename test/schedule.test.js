@@ -27,6 +27,12 @@ const REQUEST_ANIMATION_FRAME_DELTA = 16
  * Similar to the constant above, this represents 60 frames (typically 1 second).
  */
 const ONE_REQUEST_ANIMATION_FRAME_SECOND = REQUEST_ANIMATION_FRAME_DELTA * 60
+const FRAMERATES_TO_TEST = Array(59)
+	.fill(null)
+	.map((_, index) => index + 1)
+const SUB_1FPS_FRAMERATES_TO_TEST = Array(9)
+	.fill(null)
+	.map((_, index) => (index + 1) / 10)
 
 
 
@@ -101,17 +107,14 @@ describe('schedule', function() {
 
 		this.clock.tick(ONE_REQUEST_ANIMATION_FRAME_SECOND)
 
-		// We're looking for 61 instead of 60 because `schedule()` executes the task once as soon as its added to the schedule, then again every frame after.
 		// eslint-disable-next-line no-unused-expressions
-		expect(callback.callCount).to.equal(61)
+		expect(callback.callCount).to.equal(60)
 	})
 
 	it('executes a scheduled task immediately', function() {
 		const callback = sinon.fake()
 
-		schedule(callback)
-
-		this.clock.tick(1)
+		schedule(callback, { framerate: 59 })
 
 		// eslint-disable-next-line no-unused-expressions
 		expect(callback.called).to.be.true
@@ -119,44 +122,33 @@ describe('schedule', function() {
 
 	describe('non-default framerates', function() {
 		describe('between 1fps and 60fps', function() {
-			let framerate = 1
-
-			while (framerate < 60) {
-				it(`executes a task ${framerate + 1} times per second with a framerate of ${framerate}fps`, function() {
+			// eslint-disable-next-line mocha/no-setup-in-describe
+			FRAMERATES_TO_TEST.forEach(framerate => {
+				it(`executes a task ${framerate + 1} times in one second with a framerate of ${framerate}`, function() {
 					const callback = sinon.fake()
-					schedule(callback, { framerate: framerate })
+
+					schedule(callback, { framerate })
 
 					this.clock.tick(ONE_REQUEST_ANIMATION_FRAME_SECOND)
 
 					expect(callback.callCount).to.equal(framerate + 1)
 				})
-
-				framerate += 1
-			}
+			})
 		})
 
 		describe('less than 1fps', function() {
-			let framerate = 0.1
-
-			while (framerate < 0.9) {
-				const expectedCallCount = 2
-
-				// eslint-disable-next-line mocha/no-setup-in-describe
-				const roundedSeconds = Math.round((ONE_REQUEST_ANIMATION_FRAME_SECOND / framerate) / 1000)
-
-				it(`executes a task ${expectedCallCount} times in ${roundedSeconds} seconds with a framerate of ${framerate}fps`, function() {
+			// eslint-disable-next-line mocha/no-setup-in-describe
+			SUB_1FPS_FRAMERATES_TO_TEST.forEach(framerate => {
+				it(`executes a task twice within ${Math.ceil((ONE_REQUEST_ANIMATION_FRAME_SECOND / framerate) / 1000)} seconds with a framerate of ${framerate}`, function() {
 					const callback = sinon.fake()
 
-					schedule(callback, { framerate: framerate })
+					schedule(callback, { framerate })
 
 					this.clock.tick(ONE_REQUEST_ANIMATION_FRAME_SECOND / framerate)
 
-					expect(callback.callCount).to.equal(expectedCallCount)
+					expect(callback.callCount).to.equal(2)
 				})
-
-				// eslint-disable-next-line mocha/no-setup-in-describe
-				framerate = ((framerate * 10) + (0.1 * 10)) / 10
-			}
+			})
 		})
 
 		it('throws an error on framerates higher than 60', function() {
@@ -181,7 +173,7 @@ describe('schedule', function() {
 
 		schedule(updateScopeSecret, { context: scope })
 
-		this.clock.tick(1)
+		this.clock.tick(16)
 
 		expect(scope.secret).to.equal('bar')
 	})
