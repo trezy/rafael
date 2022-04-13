@@ -28,10 +28,14 @@ describe('stop', function() {
 		})
 
 		// @ts-ignore
+		this.clock = sinon.useFakeTimers({ global: window })
+
+		// @ts-ignore
 		globalThis.window = window
 	})
 
 	after(function() {
+		this.clock.restore()
 		globalThis.window.close()
 	})
 
@@ -46,13 +50,10 @@ describe('stop', function() {
 	it('should stop all tasks', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 		schedule(sinon.fake(), { id: 'bar' })
-		schedule(sinon.fake(), { id: 'baz' })
 
 		// eslint-disable-next-line no-unused-expressions
 		expect(state.tasks).to.be.an('object')
-
-		// eslint-disable-next-line no-unused-expressions
-		expect(Object.keys(state.tasks)).to.have.lengthOf(3)
+			.with.keys('foo', 'bar')
 
 		stop()
 
@@ -60,12 +61,10 @@ describe('stop', function() {
 		expect(state.frame).to.equal(0)
 
 		// eslint-disable-next-line no-unused-expressions
-		expect(state.isPaused).to.be.false
-
-		// eslint-disable-next-line no-unused-expressions
 		expect(state.loopID).to.be.null
 
 		// eslint-disable-next-line no-unused-expressions
-		expect(state.tasks).to.be.an('object').that.is.empty
+		expect(state.tasks).to.be.an('object')
+			.that.is.empty
 	})
 })
