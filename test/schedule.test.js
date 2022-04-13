@@ -49,6 +49,7 @@ describe('schedule', function() {
 		schedule(() => {
 			if (!isDone) {
 				isDone = true
+				clear()
 				done()
 			}
 		}, { id: 'foo' })
@@ -57,7 +58,7 @@ describe('schedule', function() {
 	it('should schedule a task even without an ID', function() {
 		const expectedID = String(Object.keys(state.tasks).length)
 
-		expect(schedule(sinon.fake())).to.be.equal(expectedID)
+		expect(schedule(sinon.fake(), { isPaused: true })).to.be.equal(expectedID)
 	})
 
 	it('should error on duplicate IDs', function() {
@@ -72,6 +73,8 @@ describe('schedule', function() {
 		schedule(sinon.fake(), { id: 'baz' })
 
 		expect(Object.keys(state.tasks)).to.have.lengthOf(3)
+
+		clear()
 	})
 
 	it('should schedule a task with a framerate between 1 and 60', function(done) {
@@ -86,7 +89,7 @@ describe('schedule', function() {
 		})
 
 		setTimeout(() => {
-			unschedule('foo')
+			clear()
 			expect(count).to.be.closeTo(framerate, 5)
 			done()
 		}, 1000)
@@ -106,7 +109,7 @@ describe('schedule', function() {
 		})
 
 		setTimeout(() => {
-			unschedule('foo')
+			clear()
 			expect(count).to.be.within(2, 3)
 			done()
 		}, 4000)
@@ -135,6 +138,7 @@ describe('schedule', function() {
 
 		schedule(function() {
 			if (!isDone) {
+				clear()
 				isDone = true
 				this.secret = 'bar'
 				then()
