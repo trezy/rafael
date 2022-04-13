@@ -107,7 +107,7 @@ describe('schedule', function() {
 
 		setTimeout(() => {
 			unschedule('foo')
-			expect(count).to.equal(2)
+			expect(count).to.be.within(2, 3)
 			done()
 		}, 4000)
 	})
