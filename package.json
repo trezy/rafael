@@ -1,22 +1,23 @@
 {
   "name": "rafael",
-  "main": "./lib/index.js",
+  "description": "rAFael.js is a simple scheduling library based on the requestAnimationFrame loop.",
   "version": "0.0.0-development",
-  "authors": [
-    "Trezy <tre@trezy.com>"
+  "author": "Trezy <t@trezy.com> (https://trezy.com)",
+  "contributors": [
+    "Trezy <t@trezy.com> (https://trezy.com)"
   ],
+  "license": "BSD-3-Clause",
+  "type": "module",
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/trezy/rafael.git"
   },
+  "packageManager": "yarn@3.2.0",
   "bugs": {
     "url": "https://github.com/trezy/rafael/issues"
   },
   "homepage": "https://github.com/trezy/rafael#readme",
-  "license": "MIT",
-  "description": "rAFael.js is a simple scheduling library based on the requestAnimationFrame loop.",
-  "type": "module",
-  "types": "types/types.d.ts",
   "scripts": {
     "lint": "eslint ./lib/**/*.js ./test/**/*.js",
     "prepublish": "jsdoc -t node_modules/tsd-jsdoc/dist -r lib/**/*.js -d types",
@@ -45,6 +46,5 @@
     "shelljs": "^0.8.5",
     "sinon": "^13.0.1",
     "tsd-jsdoc": "^2.5.0"
-  },
-  "packageManager": "yarn@3.2.0"
+  }
 }
