@@ -9,9 +9,7 @@ The `schedule()` method adds a task to the schedule. Rafael then runs all tasks 
 * `task` `{Function}` The function to be run.
 * `options` `{Object?}` An object of [options](#-options).
 
-
-
-
+---
 
 ### `unschedule(taskID)`
 
@@ -24,9 +22,7 @@ The `unschedule()` method removes a task from the schedule.
 #### Returns
 - `{Boolean}` Indicates whether or not the task was successfully removed from the schedule.
 
-
-
-
+---
 
 ### `pause([taskID])`
 
@@ -36,9 +32,7 @@ The `pause()` method pauses a task without removing it from the schedule. The ta
 
 * `taskID` `{String?}` The ID of the task to be paused. If not set, all tasks will be paused.
 
-
-
-
+---
 
 ### `start([taskID])`
 
@@ -48,17 +42,13 @@ The `start()` method restarts a paused task.
 
 * `taskID` `String` The ID of the task to be started. If not set, all paused tasks will be restarted.
 
-
-
-
+---
 
 ### `clear()`
 
 Removes all tasks from the rafael.
 
-
-
-
+---
 
 ## 🔧 Options
 
