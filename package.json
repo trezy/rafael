@@ -9,6 +9,7 @@
   "license": "BSD-3-Clause",
   "type": "module",
   "main": "./lib/index.js",
+  "types": "types/types.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/trezy/rafael.git"
