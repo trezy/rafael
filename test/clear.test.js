@@ -12,6 +12,7 @@ import {
 	clear,
 	schedule,
 	state,
+	updateConfig,
 } from '../lib/index.js'
 
 
@@ -29,13 +30,14 @@ describe('clear', function() {
 		// @ts-ignore
 		this.clock = sinon.useFakeTimers({ global: window })
 
-		// @ts-ignore
-		globalThis.window = window
+		updateConfig({
+			cancelAnimationFrame: window.cancelAnimationFrame,
+			requestAnimationFrame: window.requestAnimationFrame,
+		})
 	})
 
 	after(function() {
 		this.clock.restore()
-		globalThis.window.close()
 	})
 
 	afterEach(function() {

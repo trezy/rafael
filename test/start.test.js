@@ -13,6 +13,7 @@ import {
 	schedule,
 	start,
 	state,
+	updateConfig,
 } from '../lib/index.js'
 
 
@@ -30,13 +31,14 @@ describe('start', function() {
 		// @ts-ignore
 		this.clock = sinon.useFakeTimers({ global: window })
 
-		// @ts-ignore
-		globalThis.window = window
+		updateConfig({
+			cancelAnimationFrame: window.cancelAnimationFrame,
+			requestAnimationFrame: window.requestAnimationFrame,
+		})
 	})
 
 	after(function() {
 		this.clock.restore()
-		globalThis.window.close()
 	})
 
 	afterEach(function() {
@@ -47,7 +49,7 @@ describe('start', function() {
 		expect(start).to.be.a('function')
 	})
 
-	it('should start all tasks', function() {
+	it('starts all tasks', function() {
 		const callback1 = sinon.fake()
 		const callback2 = sinon.fake()
 
@@ -81,7 +83,7 @@ describe('start', function() {
 		})
 	})
 
-	it('should start a single task', function() {
+	it('starts a single task', function() {
 		const callback1 = sinon.fake()
 		const callback2 = sinon.fake()
 

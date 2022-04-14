@@ -13,6 +13,7 @@ import {
 	schedule,
 	state,
 	unschedule,
+	updateConfig,
 } from '../lib/index.js'
 
 
@@ -30,13 +31,14 @@ describe('unschedule', function() {
 		// @ts-ignore
 		this.clock = sinon.useFakeTimers({ global: window })
 
-		// @ts-ignore
-		globalThis.window = window
+		updateConfig({
+			cancelAnimationFrame: window.cancelAnimationFrame,
+			requestAnimationFrame: window.requestAnimationFrame,
+		})
 	})
 
 	after(function() {
 		this.clock.restore()
-		globalThis.window.close()
 	})
 
 	afterEach(function() {
@@ -47,7 +49,7 @@ describe('unschedule', function() {
 		expect(unschedule).to.be.a('function')
 	})
 
-	it('should unschedule a task', function() {
+	it('unschedules a task', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 
 		// eslint-disable-next-line no-unused-expressions
@@ -61,7 +63,7 @@ describe('unschedule', function() {
 			.that.is.empty
 	})
 
-	it('should stop the task runner if there are no tasks left', function() {
+	it('stops the task runner if there are no tasks left', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 		schedule(sinon.fake(), { id: 'bar' })
 

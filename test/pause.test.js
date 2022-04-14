@@ -13,6 +13,7 @@ import {
 	pause,
 	schedule,
 	state,
+	updateConfig,
 } from '../lib/index.js'
 
 
@@ -30,13 +31,14 @@ describe('pause', function() {
 		// @ts-ignore
 		this.clock = sinon.useFakeTimers({ global: window })
 
-		// @ts-ignore
-		globalThis.window = window
+		updateConfig({
+			cancelAnimationFrame: window.cancelAnimationFrame,
+			requestAnimationFrame: window.requestAnimationFrame,
+		})
 	})
 
 	after(function() {
 		this.clock.restore()
-		globalThis.window.close()
 	})
 
 	afterEach(function() {
@@ -47,7 +49,7 @@ describe('pause', function() {
 		expect(pause).to.be.a('function')
 	})
 
-	it('should pause all tasks', function() {
+	it('pauses all tasks', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 		schedule(sinon.fake(), { id: 'bar' })
 
@@ -64,7 +66,7 @@ describe('pause', function() {
 		})
 	})
 
-	it('should pause a single task', function() {
+	it('pauses a single task', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 		schedule(sinon.fake(), { id: 'bar' })
 

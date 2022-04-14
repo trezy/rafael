@@ -13,6 +13,7 @@ import {
 	schedule,
 	state,
 	stop,
+	updateConfig,
 } from '../lib/index.js'
 
 
@@ -30,13 +31,14 @@ describe('stop', function() {
 		// @ts-ignore
 		this.clock = sinon.useFakeTimers({ global: window })
 
-		// @ts-ignore
-		globalThis.window = window
+		updateConfig({
+			cancelAnimationFrame: window.cancelAnimationFrame,
+			requestAnimationFrame: window.requestAnimationFrame,
+		})
 	})
 
 	after(function() {
 		this.clock.restore()
-		globalThis.window.close()
 	})
 
 	afterEach(function() {
@@ -47,7 +49,7 @@ describe('stop', function() {
 		expect(stop).to.be.a('function')
 	})
 
-	it('should stop all tasks', function() {
+	it('stops all tasks', function() {
 		schedule(sinon.fake(), { id: 'foo' })
 		schedule(sinon.fake(), { id: 'bar' })
 
