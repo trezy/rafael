@@ -1,0 +1,119 @@
+name: Test & Release
+
+on:
+  push:
+    branches:
+      - main
+      - next
+      - beta
+      - alpha
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          node-version: '16'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Test
+        run: yarn test
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: ${{ github.workspace }}/coverage/lcov.info
+
+  release:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/next' || github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/alpha'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          node-version: '16'
+
+      - name: Install Packages
+        run: yarn install
+
+      - name: Release
+        run: yarn semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: changelog
+          path: ${{ github.workspace }}/CHANGELOG.md
+
+  coveralls:
+    runs-on: ubuntu-latest
+    needs: release
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/next' || github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/alpha'
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: coverage-report
+          path: ${{ github.workspace }}/coverage/lcov.info
+
+      - name: Send coverage to Coveralls
+        uses: coverallsapp/github-action@1.1.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
+
+  code-climate:
+    runs-on: ubuntu-latest
+    needs: release
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/next' || github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/alpha'
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: coverage-report
+          path: ${{ github.workspace }}/coverage/lcov.info
+
+      - name: Send coverage to Code Climate
+        uses: paambaati/codeclimate-action@v3
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: ${{ github.workspace }}/coverage/lcov.info:lcov
+
+  changelog:
+    runs-on: ubuntu-latest
+    needs: release
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/next' || github.ref == 'refs/heads/beta' || github.ref == 'refs/heads/alpha'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: changelog
+          path: ${{ github.workspace }}/CHANGELOG.md
+
+      - name: Update the changelog
+        uses: github-actions-x/commit@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          push-branch: 'main'
+          commit-message: |
+            docs(*): update the changelog
+            [skip ci]
+          force-add: 'true'
+          files: ${{ github.workspace }}/CHANGELOG.md
+          name: semantic-release
+          email: semantic-release@trezy.com

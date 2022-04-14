@@ -5,7 +5,18 @@
       "channel": false,
       "main": true
     },
-    { "name": "v+([0-9]).x.x" }
+    {
+      "name": "next",
+      "channel": "next"
+    },
+    {
+      "name": "beta",
+      "prerelease": true
+    },
+    {
+      "name": "alpha",
+      "prerelease": true
+    }
   ],
   "plugins": [
     "@semantic-release/commit-analyzer",
