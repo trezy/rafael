@@ -2930,7 +2930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.0.0, glob@npm:^7.1.3":
+"glob@npm:^7.1.3":
   version: 7.1.3
   resolution: "glob@npm:7.1.3"
   dependencies:
@@ -3300,13 +3300,6 @@ __metadata:
     validate-npm-package-license: ^3.0.4
     validate-npm-package-name: ^4.0.0
   checksum: e027f60e4a1564809eee790d5a842341c784888fd7c7ace5f9a34ea76224c0adb6f3ab3bf205cf1c9c877a6e1a76c68b00847a984139f60813125d7b42a23a13
-  languageName: node
-  linkType: hard
-
-"interpret@npm:^1.0.0":
-  version: 1.2.0
-  resolution: "interpret@npm:1.2.0"
-  checksum: 85d5db9a4579f296ec9e63d38b38c768dc33db7ea0c63d5312131b23ffeee9fb8c6021db22dd0b2827030f6214a512e658a319a56ad446f487c6b1fce8b67edd
   languageName: node
   linkType: hard
 
@@ -5284,13 +5277,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-parse@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "path-parse@npm:1.0.6"
-  checksum: 962a85dd384d68d469ec5ba4010df8f8f9b7e936ce603bbe3211476c5615feb3c2b1ca61211a78445fadc833f0b1a86ea6484c861035ec4ac93011ba9aff9a11
-  languageName: node
-  linkType: hard
-
 "path-parse@npm:^1.0.7":
   version: 1.0.7
   resolution: "path-parse@npm:1.0.7"
@@ -5516,7 +5502,6 @@ __metadata:
     mocha: ^9.2.2
     nyc: ^15.1.0
     semantic-release: ^19.0.2
-    shelljs: ^0.8.5
     sinon: ^13.0.1
     tsd-jsdoc: ^2.5.0
   languageName: unknown
@@ -5660,15 +5645,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rechoir@npm:^0.6.2":
-  version: 0.6.2
-  resolution: "rechoir@npm:0.6.2"
-  dependencies:
-    resolve: ^1.1.6
-  checksum: fe76bf9c21875ac16e235defedd7cbd34f333c02a92546142b7911a0f7c7059d2e16f441fe6fb9ae203f459c05a31b2bcf26202896d89e390eda7514d5d2702b
-  languageName: node
-  linkType: hard
-
 "redent@npm:^3.0.0":
   version: 3.0.0
   resolution: "redent@npm:3.0.0"
@@ -5794,15 +5770,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.1.6":
-  version: 1.10.0
-  resolution: "resolve@npm:1.10.0"
-  dependencies:
-    path-parse: ^1.0.6
-  checksum: 85ba6e75f7324fa5c17b4a3eb565d93b3a7dbca89625ebd920a49d0e1c32984a76ff54fdda3a8de56c1145c1cddd9b781b71dd8cd4c29d9b9adc29dfa7168637
-  languageName: node
-  linkType: hard
-
 "resolve@npm:^1.10.0":
   version: 1.22.0
   resolution: "resolve@npm:1.22.0"
@@ -5813,15 +5780,6 @@ __metadata:
   bin:
     resolve: bin/resolve
   checksum: a2d14cc437b3a23996f8c7367eee5c7cf8149c586b07ca2ae00e96581ce59455555a1190be9aa92154785cf9f2042646c200d0e00e0bbd2b8a995a93a0ed3e4e
-  languageName: node
-  linkType: hard
-
-"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>":
-  version: 1.10.0
-  resolution: "resolve@patch:resolve@npm%3A1.10.0#~builtin<compat/resolve>::version=1.10.0&hash=07638b"
-  dependencies:
-    path-parse: ^1.0.6
-  checksum: 15a10fd1be02a58840c03aa8dcc704656e5337efc17ac411cdbf5a96933a3697142952b42ce5bff9d14c0675f73f2c0dd8de91765265d88e8e44e7b06c9f9910
   languageName: node
   linkType: hard
 
@@ -6028,19 +5986,6 @@ __metadata:
   version: 3.0.0
   resolution: "shebang-regex@npm:3.0.0"
   checksum: 1a2bcae50de99034fcd92ad4212d8e01eedf52c7ec7830eedcf886622804fe36884278f2be8be0ea5fde3fd1c23911643a4e0f726c8685b61871c8908af01222
-  languageName: node
-  linkType: hard
-
-"shelljs@npm:^0.8.5":
-  version: 0.8.5
-  resolution: "shelljs@npm:0.8.5"
-  dependencies:
-    glob: ^7.0.0
-    interpret: ^1.0.0
-    rechoir: ^0.6.2
-  bin:
-    shjs: bin/shjs
-  checksum: 7babc46f732a98f4c054ec1f048b55b9149b98aa2da32f6cf9844c434b43c6251efebd6eec120937bd0999e13811ebd45efe17410edb3ca938f82f9381302748
   languageName: node
   linkType: hard
 
