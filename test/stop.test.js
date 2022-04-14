@@ -1,6 +1,5 @@
 // Module imports
 import { expect } from 'chai'
-import { JSDOM } from 'jsdom'
 import sinon from 'sinon'
 
 
@@ -8,6 +7,10 @@ import sinon from 'sinon'
 
 
 // Local imports
+import {
+	cancelAnimationFrame,
+	requestAnimationFrame,
+} from './helpers/requestAnimationFrameShim.js'
 import {
 	clear,
 	schedule,
@@ -22,23 +25,10 @@ import {
 
 describe('stop', function() {
 	before(function() {
-		// Run `jsdom` to get a fake `window`
-		const { window } = new JSDOM('', {
-			// This option ensures that the `window` object has `requestAnimationFrame`
-			pretendToBeVisual: true,
-		})
-
-		// @ts-ignore
-		this.clock = sinon.useFakeTimers({ global: window })
-
 		updateConfig({
-			cancelAnimationFrame: window.cancelAnimationFrame,
-			requestAnimationFrame: window.requestAnimationFrame,
+			cancelAnimationFrame,
+			requestAnimationFrame,
 		})
-	})
-
-	after(function() {
-		this.clock.restore()
 	})
 
 	afterEach(function() {

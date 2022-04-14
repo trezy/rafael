@@ -1,6 +1,5 @@
 // Module imports
 import { expect } from 'chai'
-import { JSDOM } from 'jsdom'
 import sinon from 'sinon'
 
 
@@ -8,6 +7,10 @@ import sinon from 'sinon'
 
 
 // Local imports
+import {
+	advanceRequestAnimationFrameShim,
+	requestAnimationFrame,
+} from './helpers/requestAnimationFrameShim.js'
 import {
 	clear,
 	schedule,
@@ -22,23 +25,7 @@ import {
 
 describe('start', function() {
 	before(function() {
-		// Run `jsdom` to get a fake `window`
-		const { window } = new JSDOM('', {
-			// This option ensures that the `window` object has `requestAnimationFrame`
-			pretendToBeVisual: true,
-		})
-
-		// @ts-ignore
-		this.clock = sinon.useFakeTimers({ global: window })
-
-		updateConfig({
-			cancelAnimationFrame: window.cancelAnimationFrame,
-			requestAnimationFrame: window.requestAnimationFrame,
-		})
-	})
-
-	after(function() {
-		this.clock.restore()
+		updateConfig({ requestAnimationFrame })
 	})
 
 	afterEach(function() {
@@ -61,7 +48,7 @@ describe('start', function() {
 			expect(task.isPaused).to.be.true
 		})
 
-		this.clock.tick(1000)
+		advanceRequestAnimationFrameShim(59)
 
 		// eslint-disable-next-line no-unused-expressions
 		expect(callback1.called).to.be.false
@@ -70,7 +57,7 @@ describe('start', function() {
 
 		start()
 
-		this.clock.tick(1000)
+		advanceRequestAnimationFrameShim(59)
 
 		// eslint-disable-next-line no-unused-expressions
 		expect(callback1.called).to.be.true
@@ -101,7 +88,7 @@ describe('start', function() {
 		// eslint-disable-next-line no-unused-expressions
 		expect(state.tasks['bar'].isPaused).to.be.true
 
-		this.clock.tick(1000)
+		advanceRequestAnimationFrameShim(59)
 
 		// eslint-disable-next-line no-unused-expressions
 		expect(callback1.called).to.be.false
@@ -115,7 +102,7 @@ describe('start', function() {
 		// eslint-disable-next-line no-unused-expressions
 		expect(state.tasks['bar'].isPaused).to.be.true
 
-		this.clock.tick(1000)
+		advanceRequestAnimationFrameShim(59)
 
 		// eslint-disable-next-line no-unused-expressions
 		expect(callback1.called).to.be.true

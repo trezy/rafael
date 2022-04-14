@@ -1,6 +1,5 @@
 // Module imports
 import { expect } from 'chai'
-import { JSDOM } from 'jsdom'
 import sinon from 'sinon'
 
 
@@ -9,9 +8,15 @@ import sinon from 'sinon'
 
 // Local imports
 import {
-	clear,
+	advanceRequestAnimationFrameShim,
+	cancelAnimationFrame,
+	requestAnimationFrame,
+	resetRequestAnimationFrameShim,
+} from './helpers/requestAnimationFrameShim.js'
+import {
 	schedule,
 	state,
+	stop,
 	updateConfig,
 } from '../lib/index.js'
 
@@ -41,27 +46,15 @@ const SUB_1FPS_FRAMERATES_TO_TEST = Array(9)
 
 describe('schedule', function() {
 	before(function() {
-		// Run `jsdom` to get a fake `window`
-		const { window } = new JSDOM('', {
-			// This option ensures that the `window` object has `requestAnimationFrame`
-			pretendToBeVisual: true,
-		})
-
-		// @ts-ignore
-		this.clock = sinon.useFakeTimers({ global: window })
-
 		updateConfig({
-			cancelAnimationFrame: window.cancelAnimationFrame,
-			requestAnimationFrame: window.requestAnimationFrame,
+			cancelAnimationFrame,
+			requestAnimationFrame,
 		})
-	})
-
-	after(function() {
-		this.clock.restore()
 	})
 
 	afterEach(function() {
-		clear()
+		stop()
+		resetRequestAnimationFrameShim()
 	})
 
 	it('exists', function() {
@@ -107,9 +100,8 @@ describe('schedule', function() {
 
 		schedule(callback)
 
-		this.clock.tick(ONE_REQUEST_ANIMATION_FRAME_SECOND)
+		advanceRequestAnimationFrameShim(59)
 
-		// eslint-disable-next-line no-unused-expressions
 		expect(callback.callCount).to.equal(60)
 	})
 
@@ -122,6 +114,21 @@ describe('schedule', function() {
 		expect(callback.called).to.be.true
 	})
 
+	it('executes a task with a given context', function() {
+		const scope = {}
+
+		//eslint-disable-next-line jsdoc/require-jsdoc
+		function updateScopeSecret() {
+			this.secret = 'bar'
+		}
+
+		schedule(updateScopeSecret, { context: scope })
+
+		advanceRequestAnimationFrameShim(1)
+
+		expect(scope.secret).to.equal('bar')
+	})
+
 	describe('non-default framerates', function() {
 		describe('between 1fps and 60fps', function() {
 			// eslint-disable-next-line mocha/no-setup-in-describe
@@ -131,7 +138,7 @@ describe('schedule', function() {
 
 					schedule(callback, { framerate })
 
-					this.clock.tick(ONE_REQUEST_ANIMATION_FRAME_SECOND)
+					advanceRequestAnimationFrameShim(59)
 
 					expect(callback.callCount).to.equal(framerate + 1)
 				})
@@ -146,7 +153,7 @@ describe('schedule', function() {
 
 					schedule(callback, { framerate })
 
-					this.clock.tick(ONE_REQUEST_ANIMATION_FRAME_SECOND / framerate)
+					advanceRequestAnimationFrameShim(59 / framerate)
 
 					expect(callback.callCount).to.equal(2)
 				})
@@ -163,20 +170,5 @@ describe('schedule', function() {
 
 			expect(scheduleWithExcessiveFramerate).to.throw(RangeError)
 		})
-	})
-
-	it('executes a task with a given context', function() {
-		const scope = {}
-
-		//eslint-disable-next-line jsdoc/require-jsdoc
-		function updateScopeSecret() {
-			this.secret = 'bar'
-		}
-
-		schedule(updateScopeSecret, { context: scope })
-
-		this.clock.tick(16)
-
-		expect(scope.secret).to.equal('bar')
 	})
 })
