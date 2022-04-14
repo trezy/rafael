@@ -39,9 +39,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Uses codfish's Semantic Release Action: https://github.com/marketplace/actions/semantic-release-action
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+          node-version: '16'
+
+      - name: Install Packages
+        run: yarn install
+
       - name: Release
-        uses: docker://ghcr.io/codfish/semantic-release-action@sha256:43a9e5ce88fc0460c22f3f3c45e39ac99e1cefff2ffd76c6e8c34306c8ccec91
+        run: yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
