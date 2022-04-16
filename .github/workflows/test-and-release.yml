@@ -111,14 +111,13 @@ jobs:
           path: ${{ github.workspace }}/CHANGELOG.md
 
       - name: Update the changelog
-        uses: github-actions-x/commit@v2
+        uses: actions-x/commit@v5
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: 'main'
-          commit-message: |
+          branch: 'main'
+          email: semantic-release@trezy.com
+          files: ${{ github.workspace }}/CHANGELOG.md
+          force: true
+          message: |
             docs(*): update the changelog
             [skip ci]
-          force-add: 'true'
-          files: ${{ github.workspace }}/CHANGELOG.md
           name: semantic-release
-          email: semantic-release@trezy.com
